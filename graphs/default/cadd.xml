@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="no"?>
+
+<graph>
+
+    <description>
+    CADD pipleline Roll
+
+    </description>
+
+    <copyright>
+    </copyright>
+
+    <changelog>
+    $Log: cadd.xml,v $
+    Revision 1.1  2012/01/23 18:17:09  nadya
+    initial
+
+
+    </changelog>
+
+
+    <edge from="server" to="cadd-server" />
+    <edge from="client" to="cadd-client" />
+
+    <order head="opal">
+        <tail>cadd-server</tail>
+    </order>
+
+</graph>
+

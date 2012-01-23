@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no" ?>
+
+<kickstart>
+
+	<description>
+	CADD Configuration
+	</description>
+
+	<copyright>
+	</copyright>
+
+	<changelog>
+	</changelog>
+
+	<package>fltk</package>
+	<package>netcdf</package>
+	<package>openbabel</package>
+	<package>vmd</package>
+
+<post>
+/sbin/ldconfgi
+</post>
+
+</kickstart>
+
