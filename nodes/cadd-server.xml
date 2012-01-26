@@ -15,10 +15,63 @@
 	<package>fltk</package>
 	<package>netcdf</package>
 	<package>openbabel</package>
-	<package>vmd</package>
+	<package>autodock-vina-cadd</package>
+	<package>gromacs-cadd</package>
 
 <post>
-/sbin/ldconfgi
+/sbin/ldconfig
+
+#Make log file directory 
+mkdir -p /opt/cadd/logs
+chown tomcat /opt/cadd/logs
+
+
+
+
+# Opal deployment stuff
+if [ -d /opt/opal ]; then
+    #ok we have opal installed
+    #let's deploy the 
+
+
+#TODO serivce name on the workflow is /GROMOS_ClusterFiles no gromos_cluster_4.5.5
+<file name="/opt/opal/deployed/deploy.sh" mode="append">
+#gromos clustering
+gromacs_script=/opt/cadd/bin/gromos_cluster_files.sh
+if test -e $gromacs_script; then
+    $ANT -f $OPALXML deploy -DserviceName=gromos_cluster_4.5.5 -DappConfig=$OPALCONFIG/gromos_cluster_4.5.5_config.xml
+fi
+
+</file>
+
+
+<file name="/opt/opal/deployed/deploy.sh" mode="append">
+#autodock
+vina_screening_script=/opt/cadd/bin/vina_screening.sh
+if test -e $vina_screening_script; then
+    $ANT -f $OPALXML deploy -DserviceName=AutodockVina_Screening -DappConfig=$OPALCONFIG/vina_screening.xml
+fi
+
+prepare_receptor_script=/opt/cadd/bin/prepare_receptor.sh
+if test -e $prepare_receptor_script; then
+    $ANT -f $OPALXML deploy -DserviceName=PrepareReceptorOpalService -DappConfig=$OPALCONFIG/prepare_receptor.xml
+fi
+
+</file>
+
+
+
+    export JAVA_HOME=/usr/java/latest
+    export PATH=$JAVA_HOME/bin:$PATH
+    export CATALINA_HOME=/opt/tomcat
+    #takes a little longer in this way but less code to write
+    /bin/su tomcat -c "/opt/opal/deployed/deploy.sh"
+
+fi
+
+
+
+
 </post>
 
 </kickstart>
