@@ -16,6 +16,9 @@
 	<package>netcdf</package>
 	<package>openbabel</package>
 	<package>vmd</package>
+        <package>autodock-vina-cadd</package>
+        <package>gromacs-cadd</package>
+
 
 <post>
 /sbin/ldconfig
