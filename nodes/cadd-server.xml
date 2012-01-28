@@ -17,6 +17,7 @@
 	<package>openbabel</package>
 	<package>autodock-vina-cadd</package>
 	<package>gromacs-cadd</package>
+        <package>libraries</package>
 
 <post>
 /sbin/ldconfig

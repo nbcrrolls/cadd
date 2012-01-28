@@ -1,27 +1,44 @@
 #!/bin/bash
 
 VINA=/opt/mgltools/bin/vina
-#TODO
-LIBRARYBASEDIR="/nas/opaluser/ligand_libs/"
+LIBRARYBASEDIR=/share/opal/libraries
 SCREEN_ROOT=/opt/cadd/bin
-LOGDIR="/opt/cadd/logs"
+#LOGDIR="/opt/cadd/logs"
 SGE_JOB_LIMIT=75000
 #JOB_LIMIT=2500
 JOB_LIMIT=25000
 ACL=/home/opaluser/screening/bin/vs.acl
-webapps=/export/opal/opal-jobs/
+webapps=/share/opal/opal-jobs
 show=200
 
 # Libs with no copy right issues
-OKLIBS="NCIDiversity NCI_DS1 NCI_DS2 NCIDS_SC oldNCI"
+OKLIBS="NCI_DS2 sample"
 
-export PATH=/opt/gridengine/bin/lx26-x86/:$PATH
+. /etc/profile.d/sge-binaries.sh
+
 
 echo Inputs arguments: $@
 
 function usage
 {
   echo "TDB Usage"
+}
+
+function extract_results(){
+    #this function sumarizes the results 
+    #of a virtual screening simulation 
+    for i in */*.log;
+    do
+        grep "^   1" $i >> temp_energies
+    done
+    ls -d */ > temp_dirs
+    paste temp_dirs temp_energies > temp_pasted
+    sort -k 3 -g temp_pasted | head -n 500 > screen_result_summary.log
+    
+    rm temp_dirs
+    rm temp_pasted
+    rm temp_energies
+    
 }
 
 other_args=""
@@ -80,7 +97,7 @@ if test -z "$userlib"; then
   WORKINGDIR=$mdir/$WORKINGDIR
   mkdir $WORKINGDIR
   wbd=`basename $WORKINGDIR`
-  echo "$cbd - $wbd" >> $LOGDIR/results.log
+  #echo "$cbd - $wbd" >> $LOGDIR/results.log
 else
   WORKINGDIR=$cdir
 fi
@@ -371,19 +388,16 @@ do
     echo "Only top results will be displayed"
   fi
 
-  if test "$NUMLIGANDS" -ge 10; then
-      qsub -l urgent -sync y $s
-  else
-      qsub -l all.q -sync y $s
-  fi
+  qsub -sync y $s
 
   echo "Vina array job ($begin-$end) finished."
 done
 
 
 
-$SCREEN_ROOT/autodock-vina/extract_results.sh
+extract_results
 
+#TODO fix this
 cp /home/opaluser/screening/README $cdir/README_CITE
 
 cd $cdir

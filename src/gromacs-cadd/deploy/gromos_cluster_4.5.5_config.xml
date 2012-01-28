@@ -64,7 +64,7 @@
                 <id>default_options</id>
                 <tag>default_options</tag>
                 <paramType>STRING</paramType>
-                <default>-o -g -dist -ev -sz -tr -ntr -clid -cl</default>
+                <default>-o -g -dist -ev -sz -ntr -clid -cl</default>
                 <textDesc>Default </textDesc>
             </param>
 

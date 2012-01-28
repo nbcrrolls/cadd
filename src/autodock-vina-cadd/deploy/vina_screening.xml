@@ -56,19 +56,10 @@ TBD
             <paramType>STRING</paramType>
             <required>false</required>
             <semanticType></semanticType>
+            <value>NCI_DS2</value>
             <value>sample</value>
             <value>NCIDS_SC</value>
             <value>NCI_DS1</value>
-            <value>NCI_DS2</value>
-            <value>human_metabolome</value>
-            <value>chembridge_building_blocks</value>
-            <value>drugbank_nutraceutics</value>
-            <value>drugbank_smallmol</value>
-            <value>asinex</value>
-            <value>fda_approved</value>
-            <value>otava</value>
-<!--            <value>zinc_natural_products</value>  -->
-            <value>zinc_natural_products_0</value>
             <textDesc>Use existing ligand library on the server
             &lt;BR&gt;
             &lt;A HREF=https://www.nbcr.net/pub/wiki/index.php?title=Virtual_Screening_Libraries&gt;
@@ -281,6 +272,7 @@ TBD
 
   </types>
   </metadata>
-  <binaryLocation>/opt/mgltools/bin/vina_screening.sh</binaryLocation>
+  <binaryLocation>/opt/cadd/bin/vina_screening.sh</binaryLocation>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
   <parallel>false</parallel>
 </appConfig>
