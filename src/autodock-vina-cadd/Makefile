@@ -66,10 +66,10 @@ build:
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( cd scripts; \
-		find . | cpio -pduv $(ROOT)/$(PKGROOT) )
+		find . | grep -v CVS | cpio -pduv $(ROOT)/$(PKGROOT) )
 	chmod -R +x $(ROOT)/$(PKGROOT)
 	mkdir -p $(ROOT)/$(DEPLOY_ROOT)
-	install -m644 deploy/* $(ROOT)/$(DEPLOY_ROOT)
+	install -m644 deploy/*xml $(ROOT)/$(DEPLOY_ROOT)
 
 clean::
 	(for i in scripts/*;do rm -rf $(ROOT)/$(PKGROOT)/$$i; done)
