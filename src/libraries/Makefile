@@ -1,10 +1,13 @@
 #
-# $Id: Makefile,v 1.1 2012/01/28 03:20:00 clem Exp $
+# $Id: Makefile,v 1.2 2012/01/31 20:43:33 clem Exp $
 #
 # @Copyright@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.2  2012/01/31 20:43:33  clem
+# minor fixes to the cadd roll
+#
 # Revision 1.1  2012/01/28 03:20:00  clem
 # First round of fixes to the vina autodock screening scritp,
 # still a lot of work to do.
@@ -17,7 +20,7 @@
 #
 #
 
-CADDROLL        = /share/opal/
+CADDROLL        = /state/partition1/opal
 PKGROOT		= $(CADDROLL)/libraries
 LIBRARIES	= NCI_DS2 sample
 REDHAT.ROOT     = $(CURDIR)/../../

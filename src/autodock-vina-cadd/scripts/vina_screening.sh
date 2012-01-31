@@ -29,7 +29,7 @@ function extract_results(){
     #of a virtual screening simulation 
     for i in */*.log;
     do
-        grep "^   1" $i >> temp_energies
+        grep "^   1 " $i >> temp_energies
     done
     ls -d */ > temp_dirs
     paste temp_dirs temp_energies > temp_pasted
