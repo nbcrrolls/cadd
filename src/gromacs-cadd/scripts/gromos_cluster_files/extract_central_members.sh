@@ -4,7 +4,6 @@
 # the output is in cluster_frames/
 
 # start script from in directory with log file and insert trajectory path below
-#pdbpath=/Your/path/here/trajectory.pdb
 pdbpath=$1
 path=$(pwd)
 echo "$path"

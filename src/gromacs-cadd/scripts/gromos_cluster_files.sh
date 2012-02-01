@@ -61,7 +61,7 @@ CMD1="python $SCREEN_BIN/makeGromacsFiles.py --traj=$t --active=$a $prefix"
 echo "Prepared to execute:  $CMD1"
 $CMD1
 
-CMD2="$GROMACS_BIN/g_cluster_d -n $prefname$SELECT -cutoff $cutoff -f $prefname$TRAJ -s $prefname$FF -method $method $options"
+CMD2="$GROMACS_BIN/g_cluster -n $prefname$SELECT -cutoff $cutoff -f $prefname$TRAJ -s $prefname$FF -method $method $options"
 echo "Prepared to execute:  $CMD2"
 echo "1 1" | $CMD2
 
