@@ -1,10 +1,13 @@
 #
-# $Id: Makefile,v 1.1 2012/01/24 03:41:02 nadya Exp $
+# $Id: Makefile,v 1.2 2012/02/02 17:33:50 nadya Exp $
 #
 # @Copyright@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.2  2012/02/02 17:33:50  nadya
+# move to respective rolls
+#
 # Revision 1.1  2012/01/24 03:41:02  nadya
 # initial
 #
@@ -21,16 +24,17 @@ VMDARCH=LINUXAMD64
 endif
 
 build: 
-	gunzip -c $(NAME)-$(VERSION).src.tar.gz | $(TAR) -xf -
-	gunzip -c STRIDE.tar.gz | $(TAR) -xf - 
-	gunzip -c SURF.tar.gz | $(TAR) -xf - 
-	cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../
-	cd STRIDE; make; cp stride ../$(NAME)-$(VERSION)/lib/stride/stride_$(VMDARCH)
-	cd SURF; make depend; make; cp surf ../$(NAME)-$(VERSION)/lib/surf/surf_$(VMDARCH)
+#	gunzip -c $(NAME)-$(VERSION).src.tar.gz | $(TAR) -xf -
+#	gunzip -c STRIDE.tar.gz | $(TAR) -xf - 
+#	gunzip -c SURF.tar.gz | $(TAR) -xf - 
+#	cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../
+#	cd STRIDE; make; cp stride ../$(NAME)-$(VERSION)/lib/stride/stride_$(VMDARCH)
+#	cd SURF; make depend; make; cp surf ../$(NAME)-$(VERSION)/lib/surf/surf_$(VMDARCH)
 	( cd plugins; \
 		export NETCDFINC=-I$(CADDROLL)/netcdf/include; \
 		export NETCDFLIB=-L$(CADDROLL)/netcdf/lib; \
 		export PLUGINDIR=`pwd`/../$(NAME)-$(VERSION)/plugins; \
+		make $(VMDARCH) TCLINC=/usr/include TCLLIB=/usr/lib; 			\
 		make $(VMDARCH) distrib; 			\
 	)
 	(								\
