@@ -50,12 +50,12 @@ fi
 #autodock
 vina_screening_script=/opt/cadd/bin/vina_screening.sh
 if test -e $vina_screening_script; then
-    $ANT -f $OPALXML deploy -DserviceName=AutodockVina_Screening -DappConfig=$OPALCONFIG/vina_screening.xml
+    $ANT -f $OPALXML deploy -DserviceName=autodockvina_screening_1.1.2 -DappConfig=$OPALCONFIG/vina_screening_1.1.2.xml
 fi
 
 prepare_receptor_script=/opt/cadd/bin/prepare_receptor.sh
 if test -e $prepare_receptor_script; then
-    $ANT -f $OPALXML deploy -DserviceName=PrepareReceptorOpalService -DappConfig=$OPALCONFIG/prepare_receptor.xml
+    $ANT -f $OPALXML deploy -DserviceName=prepare_receptor_1.5.6 -DappConfig=$OPALCONFIG/prepare_receptor_1.5.6.xml
 fi
 
 </file>
