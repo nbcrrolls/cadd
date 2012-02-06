@@ -12,10 +12,6 @@
 	<changelog>
 	</changelog>
 
-	<package>fltk</package>
-	<package>netcdf</package>
-	<package>openbabel</package>
-	<package>vmd</package>
         <package>autodock-vina-cadd</package>
         <package>gromacs-cadd</package>
 
