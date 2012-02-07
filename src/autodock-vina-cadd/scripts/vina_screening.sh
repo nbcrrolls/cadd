@@ -377,6 +377,8 @@ do
   echo "sed -i \"s%receptor.*$%receptor = $receptor%\" \$SEED/$config" >> $s
   echo "cd \$SEED" >> $s
   echo "cp ../*.pdbqt ." >> $s
+  echo "touch $WORKINGDIR" >> $s
+  echo "touch $cdir" >> $s
   echo "$VINA --config $config >& sge_array_\$SEED.log" >> $s
   
   chmod +x $s
