@@ -12,9 +12,8 @@
 	<changelog>
 	</changelog>
 
-	<package>autodock-vina-cadd</package>
-	<package>gromacs-cadd</package>
-        <package>autodock-libraries</package>
+    <package>autodock-libraries</package>
+	<package>cadd-deplyed</package>
 
 <post>
 /sbin/ldconfig
