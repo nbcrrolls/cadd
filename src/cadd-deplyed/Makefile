@@ -71,7 +71,7 @@ install::
 		find . | grep -v CVS | cpio -pduv $(ROOT)/$(PKGROOT) )
 	chmod -R +x $(ROOT)/$(PKGROOT)
 	mkdir -p $(ROOT)/$(DEPLOY_ROOT)
-	install -m644 deploy/*xml $(ROOT)/$(DEPLOY_ROOT)
+	install -m644 xml-configs/*xml $(ROOT)/$(DEPLOY_ROOT)
 
 
 
