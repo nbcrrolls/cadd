@@ -33,29 +33,35 @@ if [ -d /opt/opal ]; then
 
 #TODO serivce name on the workflow is /GROMOS_ClusterFiles no gromos_cluster_4.5.5
 <file name="/opt/opal/deployed/deploy.sh" mode="append">
-#gromos clustering
-gromacs_script=/opt/cadd/bin/gromos_cluster_files.sh
-if test -e $gromacs_script; then
-    $ANT -f $OPALXML deploy -DserviceName=gromos_cluster_4.5.5 -DappConfig=$OPALCONFIG/gromos_cluster_4.5.5_config.xml
+# gromos clustering
+gromosVER=4.5.5
+gromos_script=/opt/cadd/bin/gromos_cluster_files.sh
+if test -e $gromos_script; then
+    $ANT -f $OPALXML deploy -DserviceName=gromos_cluster_$gromosVER -DappConfig=$OPALCONFIG/gromos_cluster_$gromosVER.xml
 fi
 
-</file>
-
-
-<file name="/opt/opal/deployed/deploy.sh" mode="append">
-#autodock
+# autodock vina screening
+vinaVER=1.1.2
 vina_screening_script=/opt/cadd/bin/vina_screening.sh
 if test -e $vina_screening_script; then
-    $ANT -f $OPALXML deploy -DserviceName=autodockvina_screening_1.1.2 -DappConfig=$OPALCONFIG/vina_screening_1.1.2.xml
+    $ANT -f $OPALXML deploy -DserviceName=autodockvina_screening_$vinaVER -DappConfig=$OPALCONFIG/vina_screening_$vinaVER.xml
 fi
 
+# prepare receptor
+prepare_receptorVER=1.5.6
 prepare_receptor_script=/opt/cadd/bin/prepare_receptor.sh
 if test -e $prepare_receptor_script; then
-    $ANT -f $OPALXML deploy -DserviceName=prepare_receptor_1.5.6 -DappConfig=$OPALCONFIG/prepare_receptor_1.5.6.xml
+    $ANT -f $OPALXML deploy -DserviceName=prepare_receptor_$prepare_receptorVER -DappConfig=$OPALCONFIG/prepare_receptor_$prepare_receptorVER.xml
+fi
+
+# trajqr clustering
+trajqr_script=/opt/cadd/bin/trajQR.py
+trajqrver=1.0
+if test -e $trajqr_script ; then
+    ant -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
 fi
 
 </file>
-
 
 
     export JAVA_HOME=/usr/java/latest
