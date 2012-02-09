@@ -1,0 +1,109 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- metadata about the application being wrapped -->
+  <metadata appName="TrajQR 1.0">
+    <usage><![CDATA[TrajQR clustering on a set of pdb files]]></usage>
+    <info>
+    <![CDATA[
+SYNOPSIS:
+        trajQR.py -f FILE -r NUM [-s QRstruct] [-t QHtree]  [-h|help]
+
+DESCRIPTION:
+    -f|--file FILE       - compressed file of the input PDB files (files.zip or files.tar.gz).
+                           Example 1a.tar.gz, untars into a direcotry containing list of files. 
+    -r|--rmsd NUM        - float RMSD cutoff. Examle: 0.5 
+    -s|--struct QRstruct - filename for output QR structures list. Default: qr.struct
+    -t|--tree QHtree     - filename for output QH tree. Default: qh.tree
+    -h|--help            - prints usage
+
+    ]]>
+    </info>
+    
+    <!-- information about command-line arguments -->
+    <types> 
+        <!-- list of flags -->
+        <flags>
+            <flag>
+                <id>license</id>
+                <tag> </tag>
+                <textDesc>Accept</textDesc>
+            </flag>
+        </flags>
+    
+        <!-- list of untagged parameters -->
+        <untaggedParams>
+        </untaggedParams>
+    
+        <!-- list of tagged parameters, in order -->
+        <taggedParams>
+            <param>
+                <id>file</id>
+                <tag>-f</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Compressed file of the input PDB files (zip or gz format).  
+                          Example 1a.tar.gz, untars into a directory 1a/ containing list of files. 
+		</textDesc>
+
+            </param>
+            <param>
+                <id>rmsd</id>
+                <tag>-r</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>RMSD cutoff (float value)</textDesc>
+            </param>
+            <param>
+                <id>qrstruct</id>
+                <tag>-s</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <default>qr.struct</default>
+                <textDesc>Filename for output QR structures list. Default: qr.struct </textDesc>
+            </param>            
+            <param>
+                <id>qhtree</id>
+                <tag>-t</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <default>qh.tree</default>
+                <textDesc>Filename for output QH tree. Default: qh.tree</textDesc>
+            </param>            
+        </taggedParams>
+
+        <!-- grouping of parameters -->
+        <groups>
+          <group>
+            <name>input</name>
+            <elements>file rmsd</elements>
+            <required>true</required>
+            <textDesc>Input</textDesc>
+          </group>
+          <group>
+            <name>output</name>
+            <elements>qrstruct qhtree</elements>
+            <required>true</required>
+            <textDesc>Output</textDesc>
+          </group>
+          <group>
+            <name>License</name>
+            <elements>license</elements>
+            <textDesc>Any published work which utilizes VMD/Multiseq shall include the following reference:&lt;br&gt; &lt;br&gt;
+                 Elijah Roberts, John Eargle, Dan Wright, and Zaida Luthey-Schulten. &lt;br&gt;
+                 MultiSeq: Unifying sequence and structure data for evolutionary analysis. BMC Bioinformatics. 2006,7:382. 
+            </textDesc>
+          </group>
+        </groups>
+    </types>
+
+  </metadata>
+
+  <binaryLocation>/opt/cadd/bin/trajQR.py</binaryLocation>
+ 
+  <!-- whether to validate command-line arguments using type information above -->
+  <validateArgs>false</validateArgs>
+
+  <!-- whether this application is serial or parallel -->
+  <parallel>false</parallel>
+
+</appConfig>
