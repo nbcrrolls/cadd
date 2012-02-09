@@ -1,4 +1,4 @@
-NAME = gromacs-cadd
+NAME = cadd-deployed
 PKGROOT		= /opt/cadd/bin
 RELEASE 	= 1
 
