@@ -1,0 +1,44 @@
+<chapter id="installing" xreflabel="Installing">
+<title>Installing CADD</title>
+
+<section id="adding-the-roll" xreflabel="Autodock Roll onto a Rocks System">
+<title>CADD Roll onto a Rocks System</title>
+
+<para>
+The Autodock roll will install all the file necessary to deploy the web service necessary 
+to run the CADD pipeline.
+</para>
+
+<para>
+The Autodock Roll can be installed during the Frontend installation step
+of your cluster.  In addition, it can be installed onto a running Rocks system.
+</para>
+
+<para>
+The Autodock Roll is added to a Frontend installation in exactly the same
+manner as other rolls. It is important that all the prerequisite roll are 
+also selected at install time.
+</para>
+
+
+<para>
+And the following command for Rocks 5.1 or newer.
+</para>
+
+<orderedlist numeration="arabic">
+<listitem><para><command>su - root</command></para></listitem>
+<listitem><para><command>rocks add roll @SOFTWARE_NAME@_rollname.iso clean=y</command></para></listitem>
+<listitem><para><command>cd /export/rocks/install</command></para></listitem>
+<listitem><para><command>rocks enable roll autodock</command></para></listitem>
+<listitem><para><command>rocks create distro</command></para></listitem>
+<listitem><para><command>rocks run roll @SOFTWARE_NAME@ > /tmp/@SOFTWARE_NAME@-inst.sh</command></para></listitem>
+<listitem><para><command>sh /tmp/@SOFTWARE_NAME@-inst.sh</command></para></listitem>
+</orderedlist>
+
+<para>
+The CADD pipeline script will install automatically on all compute nodes.
+</para>
+
+</section>
+
+</chapter>

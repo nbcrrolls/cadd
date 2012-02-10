@@ -1,0 +1,10 @@
+<preface id="preface" xreflabel="preface">
+<title>Preface</title>
+
+
+<para>
+
+The Computer Aided Drug Discovery (CADD) Pipeline is a workflow environment designed to support molecular dyanmics simulations and virtual screening experiments for in silico drug discovery, with a special focus on supporting the use of the Relaxed Complex Scheme. It includes web based access to applications such as NAMD, AutoDock, PDB2PQR, APBS, MGLToos and couples them in a flexible and scalable fashion through cloud computing. It is developed as a standalone application, using Vision as the backend engine for visual programming and workflow execution. The scientific applications are made accessible through CADD using Opal Web services for scalable and distributed computation.
+
+</para>
+</preface>
