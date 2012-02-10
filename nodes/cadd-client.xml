@@ -13,7 +13,7 @@
 	</changelog>
 
     <package>autodock-libraries</package>
-    <package>cadd-deplyed</package>
+    <package>cadd-deployed</package>
 
 <post>
 /sbin/ldconfig
