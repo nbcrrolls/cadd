@@ -1,10 +1,13 @@
 #
-# $Id: Makefile,v 1.2 2012/01/31 20:43:33 clem Exp $
+# $Id: Makefile,v 1.3 2012/02/13 22:40:40 clem Exp $
 #
 # @Copyright@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.3  2012/02/13 22:40:40  clem
+# Updated the libraries, still waiting for Rommie for the NCI_DS3
+#
 # Revision 1.2  2012/01/31 20:43:33  clem
 # minor fixes to the cadd roll
 #
@@ -22,7 +25,7 @@
 
 CADDROLL        = /state/partition1/opal
 PKGROOT		= $(CADDROLL)/libraries
-LIBRARIES	= NCI_DS2 sample
+LIBRARIES	= NCIDS_SC sample
 REDHAT.ROOT     = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
