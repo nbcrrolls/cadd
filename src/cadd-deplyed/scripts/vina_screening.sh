@@ -21,7 +21,16 @@ echo Inputs arguments: $@
 
 function usage
 {
-  echo "TDB Usage"
+  echo "  ./vina_screening.sh [options] "
+  echo 
+  echo "      --config file       Used to specify the file with the config option used by vina"
+  echo "      --user email        Use to specify the email address to use for sending notificaiton at "
+  echo "                          the end of the simulation"
+  echo "      --flex file         flexible part of the receptor"
+  echo "      --receptor file     receptor pdbqt file"
+  echo "      --ligand_db name    used to select the ligand library, can be either NCIDS_SC, or sample"
+  echo "      --userlib file      not supported at the moment "
+  echo "      --urllib name       not supported at the moment"
 }
 
 function extract_results(){
@@ -75,6 +84,23 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+
+
+if [ $userlib  ]; then
+	usage
+	echo
+	echo "      --userlib option not supported"
+	exit -1;
+fi
+
+if [ $urllib ]; then
+        usage
+        echo
+        echo "      --urllib option not supported"
+        exit -1;
+fi
+
+
 
 hide="false"
 

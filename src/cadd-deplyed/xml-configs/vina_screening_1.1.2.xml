@@ -65,26 +65,24 @@ TBD
             &lt;/A&gt;
             </textDesc>
         </param>
-        <param>
+        <!-- <param>
             <id>userlib</id>
-            <tag>--userlib</tag>
+            <tag> userlib</tag>
             <ioType>INPUT</ioType>
             <paramType>FILE</paramType>
             <required>false</required>
             <semanticType></semanticType>
-            <textDesc>Upload your own library (tar.gz or zip)
-        </textDesc>
+            <textDesc>Upload your own library (tar.gz or zip) </textDesc>
         </param>
         <param>
             <id>urllib</id>
-            <tag>--urllib</tag>
+            <tag>urllib</tag>
             <ioType>INPUT</ioType>
             <paramType>STRING</paramType>
             <required>false</required>
             <semanticType></semanticType>
-            <textDesc>Use ligand lib URL (must be url from the ligand upload service on kryptonite)
-        </textDesc>
-        </param>
+            <textDesc>Use ligand lib URL (must be url from the ligand upload service on kryptonite) </textDesc>
+        </param> -->
         <param>
             <id>config</id>
             <tag>--config</tag>
@@ -248,7 +246,7 @@ TBD
       </group>
       <group>
         <name>input_ligands</name>
-        <elements>ligand_db userlib urllib filter</elements> 
+        <elements>ligand_db filter</elements> 
         <textDesc>Input Ligands</textDesc>
       </group>
       <group>

@@ -1,11 +1,14 @@
 <chapter id="using" xreflabel="Using CADD">
 <title>Using CADD Roll</title>
 
+<section id="web-services" xreflabel="Web Services">
+<title> Web Services</title>
+
 <para>
 The CADD roll deployes several web services on your frontend machine. To see a live 
 list of web services available on your machine you can point your browser at 
-<ulink url="http://servername/opal2/dashboard?command=serviceList">
-http://servername/opal2/dashboard?command=serviceList</ulink>, if you click on one of the 
+<ulink url="http://localhost/opal2/dashboard?command=serviceList">
+http://localhost/opal2/dashboard?command=serviceList</ulink>, if you click on one of the 
 available serivces you can also access a web based submission form.
 Below it is reported a list of services deployed by the CADD roll.
 </para>
@@ -16,7 +19,9 @@ Below it is reported a list of services deployed by the CADD roll.
 <listitem><para>Vina Screening 1.1.2: Run a virtual screening using Vina Autodock</para></listitem>
 </orderedlist>
 
-<para></para>
+</section>
+<section id="cadd-pipeline" xreflabel="CADD Pipeline">
+<title> CADD Pipeline</title>
 
 <para>To use the Vision based pipeline you should type 
 <command>cadd</command> at your prompt. When the application 
@@ -26,6 +31,24 @@ the VinaVSPublic which allows users to run a Vina Virtual Screening,
 using available libraries on the server.
 The other two abailable workflow are in the MD Analysis section, Gromos clustering
 and TrajQR.</para>
+
+<para>
+After you loaded the pipeline to exectue it, you should click the button displayed in figure 
+below. The pipelines working directories are in <command>$HOME/CADDworkflows/</command>, 
+and all input files are fetched inside a subdirecotry from that path by default and all the output 
+files are also placed inside subdirectories starting from that path.
+</para>
+
+<mediaobject>
+    <imageobject>
+    <imagedata fileref="images/arrow.png" scale=50>
+    </imageobject>
+</mediaobject>
+
+
+</section>
+<section id="libraries" xreflabel="Libraries">
+<title> Ligand Libraries</title>
 
 
 <para>The CADD roll makes also available on the cluster several libraries of ligands,
@@ -45,5 +68,7 @@ on the frontend node, and they will be available to all the cluster via NFS.
 For a more detailed explanation of the CADD pipeline please refer to 
 <ulink url="http://cadd.nbcr.net">http://cadd.nbcr.net</ulink>.
 </para>
+
+</section>
 </chapter>
 
