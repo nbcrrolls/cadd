@@ -1,10 +1,49 @@
-<chapter id="using" xreflabel="Using Autodock">
+<chapter id="using" xreflabel="Using CADD">
 <title>Using CADD Roll</title>
 
 <para>
-TODO
+The CADD roll deployes several web services on your frontend machine. To see a live 
+list of web services available on your machine you can point your browser at 
+<ulink url="http://servername/opal2/dashboard?command=serviceList">
+http://servername/opal2/dashboard?command=serviceList</ulink>, if you click on one of the 
+available serivces you can also access a web based submission form.
+Below it is reported a list of services deployed by the CADD roll.
 </para>
+<orderedlist numeration="arabic">
+<listitem><para>Gromos Cluster 4.5.5: RMSD-based clustering algorithm developed within Gromos</para></listitem>
+<listitem><para>TrajQR: QR factorization (or structure QR) using VMD</para></listitem>
+<listitem><para>Prepare Receptor 1.5.6: Prepare a pdb file to be used by Vina for Virtual Screening</para></listitem>
+<listitem><para>Vina Screening 1.1.2: Run a virtual screening using Vina Autodock</para></listitem>
+</orderedlist>
+
+<para></para>
+
+<para>To use the Vision based pipeline you should type 
+<command>cadd</command> at your prompt. When the application 
+loads on the top of the windows you can select the pipeline you 
+want to load for execution. The top menu Virtual Screening contains 
+the VinaVSPublic which allows users to run a Vina Virtual Screening, 
+using available libraries on the server.
+The other two abailable workflow are in the MD Analysis section, Gromos clustering
+and TrajQR.</para>
 
 
+<para>The CADD roll makes also available on the cluster several libraries of ligands,
+which can be selected for performing virtual screening:</para>
+<orderedlist>
+<listitem><para>NCI_DS3: NCI Diversity Set 3. Prepared 2012. Contains ?? compounds. </para></listitem>
+<listitem><para>NCIDS_SC: NCI Diversity Set 1 with rotamers. Prepared 2006 - 2007. Uses ZINC naming scheme. Contains 2282 compounds.</para></listitem>
+<listitem><para>sample: debugging library with only 6 ligand that can be used for testing purposes</para></listitem>
+</orderedlist>
 
+
+<para>To add additional libraries the user must copy new libraries in the directory 
+<command>/state/partition1/opal/libraries</command>
+on the frontend node, and they will be available to all the cluster via NFS. 
+</para>
+<para>
+For a more detailed explanation of the CADD pipeline please refer to 
+<ulink url="http://cadd.nbcr.net">http://cadd.nbcr.net</ulink>.
+</para>
 </chapter>
+

@@ -1,10 +1,12 @@
+# $Id: Makefile,v 1.2 2012/02/14 01:23:20 clem Exp $
+#
 # @Copyright@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		            version 5.0 (V)
+# 		         version 5.4.3 (Viper)
 # 
-# Copyright (c) 2000 - 2008 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -23,7 +25,7 @@
 # features or use of this software must display the following acknowledgement: 
 # 
 # 	"This product includes software developed by the Rocks(r)
-# 	Cluster Group at the San Diego Supercomputer Center at the
+# 	Development Team at the San Diego Supercomputer Center at the
 # 	University of California, San Diego and its contributors."
 # 
 # 4. Except as permitted for the purposes of acknowledgment in paragraph 3,
@@ -50,61 +52,39 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # @Copyright@
+#
+# $Log: Makefile,v $
+# Revision 1.2  2012/02/14 01:23:20  clem
+# Newer look, with some more info
+#
 
-PKGROOT = /var/www/html/roll-documentation/$(SOFTWARE_NAME)/$(ROCKS_VERSION)
-
-
-REDHAT.ROOT = $(PWD)/../../
+PKGROOT         = /var/www/html/roll-documentation/cadd/$(VERSION)
+REDHAT.ROOT     = $(PWD)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-SEDSPEC += \
-	-e 's%@VERSION_NAME@%$(VERSION_NAME)%g' \
-	-e 's%@PUBDATE@%$(PUBDATE)%g' \
-	-e 's%@YEAR@%$(YEAR)%g' \
-	-e 's%@ROCKS_VERSION@%$(ROCKS_VERSION)%g' \
-	-e 's%@SOFTWARE_NAME@%$(SOFTWARE_NAME)%g'
+default: $(NAME).spec ../$(NAME)-$(VERSION).tar.gz
 
-default: $(NAME).spec 
+html: predoc
+	jw --backend html --dsl $(PWD)/rocks.dsl#html index.sgml 
 
-version.mk: version.mk.in
-	cat version.mk.in ../version.mk > version.mk
-
-index.sgml: index.sgml.in
-	$(SED) $(SEDSPEC) $^ > $@
-
-installing.sgml: installing.sgml.in
-	$(SED) $(SEDSPEC) $^ > $@
-
-requirements.sgml: requirements.sgml.in
-	$(SED) $(SEDSPEC) $^ > $@
-
-html: predoc index.sgml installing.sgml requirements.sgml 
-	mkdir -p ./html
-	jw --backend html --dsl $(PWD)/rocks.dsl#html \
-		--output html index.sgml
-
-pdf: predoc index.sgml installing.sgml requirements.sgml 
+pdf: predoc
 	jw --backend pdf --dsl $(PWD)/rocks.dsl#print index.sgml
-	mv index.pdf $(NAME)-$(VERSION)-$(ROCKS_VERSION).pdf
 
 build: html pdf
 
 install:: build
 	mkdir -p $(ROOT)/$(PKGROOT)/images
 	mkdir -p $(ROOT)/$(PKGROOT)/stylesheet-images
-	install -ma+r $(NAME)-$(VERSION)-$(ROCKS_VERSION).pdf 	$(ROOT)/$(PKGROOT)/
-	install -ma+r html/*.html    	$(ROOT)/$(PKGROOT)/
+	install -ma+r index.pdf 	$(ROOT)/$(PKGROOT)/$(NAME).pdf
+	install -ma+r *.html    	$(ROOT)/$(PKGROOT)/
 	install -ma+r images/*.png	$(ROOT)/$(PKGROOT)/images/
 	install -ma+r stylesheet-images/{*.gif,*.png} \
 		$(ROOT)/$(PKGROOT)/stylesheet-images/
 	install -ma+r rocks.css $(ROOT)/$(PKGROOT)/
 
 clean::
-	rm -f version.mk
-	rm -f index.sgml installing.sgml requirements_rocks.sgml
-	rm -f rocks.css rocks.dsl
-	rm -f $(NAME)-$(VERSION).pdf
-	rm -rf html
-	rm -rf stylesheet-images
+	rm -f *.html
+	rm -f index.pdf
+
 
