@@ -283,9 +283,18 @@ class TrajQR:
             print "WARNING:\t '%s' filename contains invalid characters, will use '%s' " % (name, valid_name)
         return valid_name
 
+    def fixPdbAlignment(self):
+	"""temp fix for VMD 1.9 MultiSeq problem. Change HSD, HSE, and HSP to HIS in input pdb files 
+	   Remove this function when a fix for vmd is available.
+	"""
+	sedCommand = "sed -i 's/HSD/HIS/;s/HSE/HIS/;s/HSP/HIS/' %s" 
+        for name in self.fnames : 
+        	if not os.path.isfile(name) : continue
+		os.system(sedCommand % name)
 
     def run(self):
         """ main function """
+	self.fixPdbAlignment()
         self.runVMDcommand()
 	print self.command
 
