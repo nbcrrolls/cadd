@@ -58,7 +58,7 @@ fi
 trajqr_script=/opt/cadd/bin/trajQR.py
 trajqrver=1.0
 if test -e $trajqr_script ; then
-    ant -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
+    $ANT -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
 fi
 
 </file>
