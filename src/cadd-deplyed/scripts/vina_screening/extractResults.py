@@ -1,4 +1,4 @@
-#!/share/apps/python2.6/bin/python
+#!/bin/env python
 
 import os
 import os.path
@@ -55,6 +55,9 @@ class  ResultSummary:
                     print "Config file parse error for %s" % dir
                     return
                 f.close()
+		for index in range(len(lines)):
+			if lines[index].find("-----+---------") == 0 :
+				self.lineNum = index + 1
                 try:
                     str = dir + " " + lines[self.lineNum]
                     parts = str.split()
