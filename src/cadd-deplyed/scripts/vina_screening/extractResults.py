@@ -51,7 +51,7 @@ class  ResultSummary:
         if os.path.isfile (file):
                 f = open(file)        
                 lines = f.readlines()
-                if lines[0].find("parse error"):
+                if lines[0].find("parse error") > -1 :
                     print "Config file parse error for %s" % dir
                     return
                 f.close()
