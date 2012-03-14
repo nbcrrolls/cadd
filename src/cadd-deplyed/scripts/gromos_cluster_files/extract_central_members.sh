@@ -32,7 +32,7 @@ cd frames
 numlines=$(grep -n "END" $pdbpath | cut -d":" -f1 | head -n 1)
 
 split -l "$numlines" -a 5 "$pdbpath"
-ls -1 | sort | awk '{t=t+1;print "mv " $1 " frame_" (t-2) ".pdb"}' | csh
+ls -1 | sort | awk '{t=t+1;print "mv " $1 " frame_" (t-2) ".pdb"}' | bash
 
 for i in `cat ""$path"/clusterid"`
 do

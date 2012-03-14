@@ -36,7 +36,7 @@
                 <paramType>FILE</paramType>
                 <ioType>INPUT</ioType>
                 <textDesc>
-                Compressed trajectory pdb file. Examle: apo.pdb.gz
+                Trajectory pdb file (can be compressed e.g. apo.pdb.gz)
                 </textDesc>
             </param>
 
@@ -46,7 +46,7 @@
                 <paramType>FILE</paramType>
                 <ioType>INPUT</ioType>
                 <textDesc>
-                Compressed active site residue pdb file. Examle: ars.pdb.gz
+                Active site residue pdb file (can be compressed e.g. ars.pdb.gz)
                 </textDesc>
             </param>
 
