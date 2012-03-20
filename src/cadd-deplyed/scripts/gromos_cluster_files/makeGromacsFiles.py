@@ -175,9 +175,9 @@ class Traj:
         indices = []
         lines = text.splitlines()
         for l in lines:
-            words = l.split()
-            if words[5] not in indices:
-                indices.append(words[5])
+	    ind = int(l[22:26])
+	    if ind not in indices:
+                indices.append(ind)
 
         indices.sort(lambda a,b: cmp(int(a), int(b)))
         self.indices = indices
@@ -191,11 +191,11 @@ class Traj:
         text = self.removeEmptyLine(text)
         lines = text.splitlines()
         for l in lines:
-            words = l.split()
-            if words[5] in self.indices:
-                activeSiteAtomIndices.append(words[1]) 
-            if  "CA" in words:
-                alphaCarbonIndices.append(words[1])
+	    ind = int(l[22:26])
+	    if ind in self.indices:
+                activeSiteAtomIndices.append(int(l[6:11])) 
+            if  "CA" in l:
+                alphaCarbonIndices.append(int(l[6:11]))
 
         alphaCarbonText = self.formatIndicesPrint("[ C-alpha ]", alphaCarbonIndices) +  os.linesep + os.linesep
         activeSiteText = self.formatIndicesPrint("[ active_site ]", activeSiteAtomIndices) + os.linesep + os.linesep
@@ -263,5 +263,4 @@ class Traj:
 if __name__ == "__main__":
         app=Traj(sys.argv)
         app.run()
-
 
