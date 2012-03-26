@@ -1,10 +1,13 @@
 #
-# $Id: Makefile,v 1.3 2012/02/13 22:40:40 clem Exp $
+# $Id: Makefile,v 1.4 2012/03/26 19:04:01 clem Exp $
 #
 # @Copyright@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.4  2012/03/26 19:04:01  clem
+# NCI Diversity Set 3 (just got it from Rommie A.)
+#
 # Revision 1.3  2012/02/13 22:40:40  clem
 # Updated the libraries, still waiting for Rommie for the NCI_DS3
 #
@@ -25,7 +28,7 @@
 
 CADDROLL        = /state/partition1/opal
 PKGROOT		= $(CADDROLL)/libraries
-LIBRARIES	= NCIDS_SC sample
+LIBRARIES	= NCI_DS3 NCIDS_SC sample
 REDHAT.ROOT     = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
