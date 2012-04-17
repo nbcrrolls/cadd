@@ -207,4 +207,5 @@ done
 
 $SCREEN_ROOT/vina_screening/extractResults.py ./
 
-tar -czf --exclude=results.tar.gz results.tar.gz .
+tar -cz --exclude=results.tar.gz -f results.tar.gz .
+
