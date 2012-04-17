@@ -35,6 +35,23 @@ function usage
   echo "      --ligand_db name    used to select the ligand library, can be either NCIDS_SC, or sample"
 }
 
+KILLPID=""
+
+
+function clean_up {
+	# Perform program exit housekeeping
+	echo Aborting virtual screening...
+	if [ "$KILLPID" ] ; then 
+		echo Deleting running qsub process $KILLPID
+		kill $KILLPID
+	fi
+	exit 1
+}
+
+#set up the trap for the kill
+trap clean_up SIGHUP SIGINT SIGTERM SIGQUIT SIGABRT SIGHUP SIGILL EXIT
+
+
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -122,7 +139,9 @@ else
   echo "#$ -e find_ligands.err" >> $s
   echo "find $LIBRARYBASEDIR/$ligand_db -name \*.pdbqt > ligands.list" >> $s
   chmod +x $s
-  qsub -sync y $s
+  qsub -sync y $s &
+  KILLPID=$!
+  wait
 fi
 
 
@@ -200,7 +219,9 @@ do
   
   echo "Submitting Vina array job ($begin-$end) to the SGE scheduler"
   
-  qsub -sync y $s
+  qsub -sync y $s &
+  KILLPID=$!
+  wait
 
   echo "Vina array job ($begin-$end) finished."
 done
