@@ -49,7 +49,7 @@ function clean_up {
 }
 
 #set up the trap for the kill
-trap clean_up SIGHUP SIGINT SIGTERM SIGQUIT SIGABRT SIGHUP SIGILL EXIT
+trap clean_up SIGHUP SIGINT SIGTERM
 
 
 
@@ -80,6 +80,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
+#TODO add test for config file
 
 if [ ! "$ligand_db" ]; then
 	usage
