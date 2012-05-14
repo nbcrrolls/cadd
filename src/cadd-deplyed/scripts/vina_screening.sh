@@ -14,6 +14,7 @@ OKLIBS="NCI_DS2 sample"
 
 #fixed variable don't touch them
 VINA=/opt/mgltools/bin/vina
+ANALIZE="/opt/mgltools/bin/pythonsh /opt/mgltools/MGLToolsPckgs/AutoDockTools/Utilities24/generate_vs_results_VINA.py"
 LIBRARYBASEDIR=/share/opal/libraries
 SCREEN_ROOT=/opt/cadd/bin
 #MAX number of job per array with SGE
@@ -227,7 +228,7 @@ do
   echo "Vina array job ($begin-$end) finished."
 done
 
-$SCREEN_ROOT/vina_screening/extractResults.py ./
+$ANALIZE -d . -r $receptor -l screening_report.log -R -p "*_out.pdbqt"
 
 tar -cz --exclude=results.tar.gz -f results.tar.gz .
 
