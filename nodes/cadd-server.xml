@@ -12,17 +12,11 @@
 	<changelog>
 	</changelog>
 
-    <package>autodock-libraries</package>
-	<package>cadd-deployed</package>
-
 <post>
-/sbin/ldconfig
 
 #Make log file directory 
 mkdir -p /opt/cadd/logs
 chown tomcat /opt/cadd/logs
-
-
 
 
 # Opal deployment stuff
@@ -63,16 +57,12 @@ fi
 
 </file>
 
-
     export JAVA_HOME=/usr/java/latest
     export PATH=$JAVA_HOME/bin:$PATH
     export CATALINA_HOME=/opt/tomcat
     #takes a little longer in this way but less code to write
     /bin/su tomcat -c "/opt/opal/deployed/deploy.sh"
-
 fi
-
-
 
 
 </post>

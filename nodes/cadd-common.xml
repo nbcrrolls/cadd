@@ -15,9 +15,5 @@
     <package>autodock-libraries</package>
     <package>cadd-deployed</package>
 
-<post>
-/sbin/ldconfig
-</post>
-
 </kickstart>
 

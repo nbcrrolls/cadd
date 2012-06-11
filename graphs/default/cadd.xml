@@ -12,6 +12,9 @@
 
     <changelog>
     $Log: cadd.xml,v $
+    Revision 1.2  2012/06/11 19:08:37  clem
+    updated accodingly the other rolls to work with the new opal roll, still needs some testing
+
     Revision 1.1  2012/01/23 18:17:09  nadya
     initial
 
@@ -19,11 +22,16 @@
     </changelog>
 
 
-    <edge from="server" to="cadd-server" />
-    <edge from="client" to="cadd-client" />
 
-    <order head="opal">
-        <tail>cadd-server</tail>
+    <edge from="client" to="cadd-common"/>
+    <edge from="server" to="cadd-common"/>
+
+    <!-- opal deployment -->
+    <edge from="client" to="cadd-server" cond="opal_server"/>
+    <edge from="server" to="cadd-server"/>
+
+    <order head="opal-common">
+            <tail>cadd-server</tail>
     </order>
 
 </graph>
