@@ -232,3 +232,6 @@ $ANALIZE -d . -r $receptor -l screening_report.log -R -p "*_out.pdbqt"
 
 tar -cz --exclude=results.tar.gz -f results.tar.gz .
 
+exit 0
+
+

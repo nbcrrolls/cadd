@@ -12,6 +12,9 @@
 
     <changelog>
     $Log: cadd.xml,v $
+    Revision 1.3  2012/06/30 02:57:23  clem
+    mounting ESB for dinamic libraries
+
     Revision 1.2  2012/06/11 19:08:37  clem
     updated accodingly the other rolls to work with the new opal roll, still needs some testing
 
@@ -29,6 +32,10 @@
     <!-- opal deployment -->
     <edge from="client" to="cadd-server" cond="opal_server"/>
     <edge from="server" to="cadd-server"/>
+
+    <!-- this is for creating an CADD EC2 appliance -->
+    <edge from="cadd-common" to="cadd-ec2" cond="opal_server and ec2_enable" />
+
 
     <order head="opal-common">
             <tail>cadd-server</tail>

@@ -167,16 +167,6 @@ TBD
             <textDesc>Optionally, write log file</textDesc>
         </param>
         <param>
-            <id>cpu</id>
-            <tag>--cpu</tag>
-            <paramType>STRING</paramType>
-            <required>false</required>
-            <semanticType></semanticType>
-            <value>1</value>
-            <value>2</value>
-            <textDesc>The number of CPUs to use (the default is to try to detect the number of CPUs or, failing that, use 1)</textDesc>
-        </param>
-        <param>
             <id>seed</id>
             <tag>--seed</tag>
             <paramType>STRING</paramType>
@@ -262,7 +252,7 @@ TBD
       </group>
       <group>
         <name>misc</name>
-        <elements>cpu seed exhaustiveness num_modes energy_range</elements>
+        <elements>seed exhaustiveness num_modes energy_range</elements>
         <textDesc>Misc (optional)</textDesc>
       </group>
     </groups>

@@ -1,0 +1,136 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+        <description>
+        Cadd in EC2 to support loadable ESB for libaries
+        </description>
+
+        <copyright>
+        Copyright (c) 2000 - 2008 The Regents of the University of California.
+        All rights reserved.
+        </copyright>
+
+        <changelog>
+        </changelog>
+
+
+<post os="linux" arch="x86_64">
+
+/bin/touch /root/sethostname
+
+<file name="/etc/init.d/ec2-mountVolume" perms="0755">
+#!/bin/bash
+# $Id: cadd-ec2.xml,v 1.1 2012/06/30 02:57:23 clem Exp $
+#
+# chkconfig: 2345 30 40
+# description: ec2-cadd mount EBS volume based on user data
+# and update library used by the screening
+#
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+
+mountVolume() {
+	#some logging
+	LOGFILE=/var/log/mountVolume.log
+
+	#let's check if we are inside ec2
+	curl http://169.254.169.254/2009-04-04/meta-data/public-hostname &amp;&gt; /dev/null || exit 1;
+	#let's check if the user has input some data
+	if ! curl -f http://169.254.169.254/latest/user-data/ &amp;&gt; /dev/null ; then 
+		echo -n " (No user data, exit) "; 
+		return 0;
+	fi
+
+	#let's go on
+	detachedThread &amp;
+	echo " (user data present starting thread) "
+
+}
+
+
+detachedThread(){
+
+
+	#get all the  
+	DevName=`curl -f http://169.254.169.254/latest/user-data/|grep library| awk '{print $2}'`
+	LibPath=`curl -f http://169.254.169.254/latest/user-data/|grep library| awk '{print $3}'`
+
+	#need to fix the redhat devname crazyness 
+	#https://bugzilla.redhat.com/show_bug.cgi?id=729586
+	#sda become xvd(a + 5) 
+	#from char to int
+	charInitial=`printf "%d" \'${DevName:2:1}`
+	#from int to char
+	charInitial=`expr $charInitial + 4`
+	charFinal=`printf "\x$(printf %x $charInitial)"`
+
+	LocalDevName="xvd$charFinal"
+
+	while [ true ];do
+		#wait for the device to appear
+		sleep 20
+		if ls /dev/$LocalDevName &amp;&gt; /dev/null; then 
+			break
+		fi
+	done
+
+
+	#ok we have all we need 
+	mkdir /share/device
+	mount /dev/$LocalDevName /share/device
+	NewFullLibPath=/share/device/$LibPath
+	Libs=`ls $NewFullLibPath`
+
+	#base path for the new library
+	sed -i "s:^LIBRARYBASEDIR=.*:LIBRARYBASEDIR=$NewFullLibPath:" /opt/cadd/bin/vina_screening.sh
+	#replace library list
+	LibraryList=""
+	for i in $Libs; do 
+		LibraryList="$LibraryList <value>$i</value>"
+	done
+
+	#disable history expansion to avoid mess with !
+	set +H
+	#change library list in appConfig
+	sed -i -n "1h;1!H;\${;g;s:<value>sample.*DS3</value>:$LibraryList:g;p;}" /opt/opal/deployed/vina_screening_1.1.2.xml 
+
+	
+}
+
+
+
+case "$1" in
+   start)
+	echo -n "Mouting External Volume"
+	mountVolume 
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] 
+	;;
+
+  stop)
+      echo -n "Mounting Volume (nothing to do)"
+	[ $RETVAL -eq 0 ]
+	;;
+
+  restart|reload)
+   	$0 stop
+   	$0 start
+   	RETVAL=$?
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $RETVAL
+</file>
+
+/sbin/chkconfig --add ec2-mountVolume 
+/sbin/chkconfig ec2-mountVolume on
+
+</post>
+
+</kickstart>
