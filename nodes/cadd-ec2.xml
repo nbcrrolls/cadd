@@ -20,8 +20,8 @@
 /bin/touch /root/sethostname
 
 <file name="/etc/init.d/ec2-mountVolume" perms="0755">
-#!/bin/bash
-# $Id: cadd-ec2.xml,v 1.2 2012/07/03 01:22:43 clem Exp $
+<![CDATA[#!/bin/bash
+# $Id: cadd-ec2.xml,v 1.3 2012/07/03 19:40:15 clem Exp $
 #
 # chkconfig: 2345 30 40
 # description: ec2-cadd mount EBS volume based on user data
@@ -36,15 +36,15 @@ mountVolume() {
 	LOGFILE=/var/log/mountVolume.log
 
 	#let's check if we are inside ec2
-	curl http://169.254.169.254/2009-04-04/meta-data/public-hostname &amp;&gt; /dev/null || exit 1;
+	curl http://169.254.169.254/2009-04-04/meta-data/public-hostname &> /dev/null || exit 1;
 	#let's check if the user has input some data
-	if ! curl -f http://169.254.169.254/latest/user-data/ &amp;&gt; /dev/null ; then 
+	if ! curl -f http://169.254.169.254/latest/user-data/ &> /dev/null ; then 
 		echo -n " (No user data, exit) "; 
 		return 0;
 	fi
 
 	#let's go on
-	detachedThread &amp;
+	detachedThread &
 	echo " (user data present starting thread) "
 
 }
@@ -82,7 +82,7 @@ detachedThread(){
 	while [ true ];do
 		#wait for the device to appear
 		sleep 20
-		if ls /dev/$LocalDevName &amp;&gt; /dev/null; then 
+		if ls /dev/$LocalDevName &> /dev/null; then 
 			break
 		fi
 	done
@@ -137,6 +137,7 @@ case "$1" in
 esac
 
 exit $RETVAL
+]]>
 </file>
 
 /sbin/chkconfig --add ec2-mountVolume 
