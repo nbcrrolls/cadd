@@ -19,9 +19,9 @@
 
 /bin/touch /root/sethostname
 
-<file name="/etc/init.d/ec2-mountVolume" perms="0755">
+<file name="/etc/init.d/ec2-mount-cadd-library" perms="0755">
 <![CDATA[#!/bin/bash
-# $Id: cadd-ec2.xml,v 1.3 2012/07/03 19:40:15 clem Exp $
+# $Id: cadd-ec2.xml,v 1.4 2012/07/03 19:44:21 clem Exp $
 #
 # chkconfig: 2345 30 40
 # description: ec2-cadd mount EBS volume based on user data
@@ -140,8 +140,8 @@ exit $RETVAL
 ]]>
 </file>
 
-/sbin/chkconfig --add ec2-mountVolume 
-/sbin/chkconfig ec2-mountVolume on
+/sbin/chkconfig --add ec2-mount-cadd-library
+/sbin/chkconfig ec2-mount-cadd-library on
 
 </post>
 
