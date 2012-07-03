@@ -21,7 +21,7 @@
 
 <file name="/etc/init.d/ec2-mountVolume" perms="0755">
 #!/bin/bash
-# $Id: cadd-ec2.xml,v 1.1 2012/06/30 02:57:23 clem Exp $
+# $Id: cadd-ec2.xml,v 1.2 2012/07/03 01:22:43 clem Exp $
 #
 # chkconfig: 2345 30 40
 # description: ec2-cadd mount EBS volume based on user data
@@ -50,23 +50,34 @@ mountVolume() {
 }
 
 
+function shiftChar(){
+    #
+    # this function shift the input character $1 of 4
+    # position (redhat device naming madness)
+    # https://bugzilla.redhat.com/show_bug.cgi?id=729586
+    # sda become xvd(a + 4)
+    #
+    intCharInitial=`printf "%d" \'$1`
+    #from int to char
+    intCharFinal=`expr $intCharInitial + 4`
+    charFinal=`printf "\x$(printf %x $intCharFinal)"`
+    echo -n $charFinal
+}
+
 detachedThread(){
 
 
-	#get all the  
+	# get all the info we need
+	# the for of the user data must be
+	# library devname pathtotheLibrary
+	# 
+	# where:
+	# devname is the name of the device specified when attaching the volume
+	# pathtotheLibrary is relative to the device path to the libraries for the screening
 	DevName=`curl -f http://169.254.169.254/latest/user-data/|grep library| awk '{print $2}'`
 	LibPath=`curl -f http://169.254.169.254/latest/user-data/|grep library| awk '{print $3}'`
 
-	#need to fix the redhat devname crazyness 
-	#https://bugzilla.redhat.com/show_bug.cgi?id=729586
-	#sda become xvd(a + 5) 
-	#from char to int
-	charInitial=`printf "%d" \'${DevName:2:1}`
-	#from int to char
-	charInitial=`expr $charInitial + 4`
-	charFinal=`printf "\x$(printf %x $charInitial)"`
-
-	LocalDevName="xvd$charFinal"
+	LocalDevName="xvd`shiftChar ${DevName:2:1}`"
 
 	while [ true ];do
 		#wait for the device to appear
