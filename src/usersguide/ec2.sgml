@@ -78,11 +78,11 @@ After the machine boot it will wait for the device &lt;devicename&gt; specified 
 then it will mount it and configure the pipeline to use libraries stored on that volume.
 </para>
 
-<para>To attach the volume to your running instance you should go to the EC2, Elastic Block
-Store, Volumes select the volumes you would like to attach, right click on it and select 
-"Attach Volume". In the dialog you should select the instance you just booted and in the device 
-field type "/deb/sdp". Wait 5 minute and then your instance is ready to dock against your customized
-library.
+<para>To attach the volume to your running instance you should use the AWS Console go to the EC2, 
+Elastic Block Store, Volumes section and select the volumes you would like to attach, right click on 
+it and select "Attach Volume". In the dialog you should select the instance you just booted and in 
+the device field type "/deb/sdp". Wait 5 minute and then your instance is ready to dock against your 
+customized library.
 </para>
 
 </section>
