@@ -18,43 +18,21 @@ Below it is reported a list of services deployed by the CADD roll.
 <listitem><para>Prepare Receptor 1.5.6: Prepare a pdb file to be used by Vina for Virtual Screening</para></listitem>
 <listitem><para>Vina Screening 1.1.2: Run a virtual screening using Vina Autodock</para></listitem>
 </orderedlist>
-
 </section>
+
+
 <section id="cadd-pipeline" xreflabel="CADD Pipeline">
 <title> CADD Pipeline</title>
-
-<para>To use the Vision based pipeline you should type 
-<command>cadd</command> at your prompt. When the application 
-loads on the top of the windows you can select the pipeline you 
-want to load for execution. The top menu Virtual Screening contains 
-the VinaVSPublic which allows users to run a Vina Virtual Screening, 
-using available libraries on the server.
-The other two abailable workflow are in the MD Analysis section, Gromos clustering
-and TrajQR.</para>
-
-<para>
-After you loaded the pipeline to exectue it, you should click the button displayed in figure 
-below. The pipelines working directories are in <command>$HOME/CADDworkflows/</command>, 
-and all input files are fetched inside a subdirecotry from that path by default and all the output 
-files are also placed inside subdirectories starting from that path.
-</para>
-
-<mediaobject>
-    <imageobject>
-    <imagedata fileref="images/arrow.png" scale=50>
-    </imageobject>
-</mediaobject>
-
-
+<para>New CADD Pipeline client will go here.</para>
 </section>
+
+
 <section id="libraries" xreflabel="Libraries">
 <title> Ligand Libraries</title>
-
-
 <para>The CADD roll makes also available on the cluster several libraries of ligands,
 which can be selected for performing virtual screening:</para>
 <orderedlist>
-<listitem><para>NCI_DS3: NCI Diversity Set 3. Prepared 2012. Contains ?? compounds. </para></listitem>
+<listitem><para>NCI_DS3: NCI Diversity Set 3. Prepared 2012. Contains 1563 compounds. </para></listitem>
 <listitem><para>NCIDS_SC: NCI Diversity Set 1 with rotamers. Prepared 2006 - 2007. Uses ZINC naming scheme. Contains 2282 compounds.</para></listitem>
 <listitem><para>sample: debugging library with only 6 ligand that can be used for testing purposes</para></listitem>
 </orderedlist>

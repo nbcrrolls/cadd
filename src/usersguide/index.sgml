@@ -2,6 +2,7 @@
 	<!ENTITY preface    SYSTEM "preface.sgml">
 	<!ENTITY installing SYSTEM "installing.sgml">
 	<!ENTITY using SYSTEM "using.sgml">
+	<!ENTITY ec2 SYSTEM "ec2.sgml">
 	<!ENTITY copyrights SYSTEM "copyrights.sgml">
 	<!ENTITY % entities SYSTEM "entities.sgml">
 	%entities;
@@ -38,6 +39,7 @@
 &preface;
 &installing;
 &using;
+&ec2;
 &copyrights;
 
 </book>

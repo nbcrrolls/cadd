@@ -1,0 +1,126 @@
+<chapter id="ec2" xreflabel="EC2 CADD AMI">
+<title>Using the EC2 CADD Amazon Machine Images (AMI)</title>
+
+<para>
+Amazon Elastic Compute Cloud (Amazon EC2) is a web service that 
+provides resizable compute capacity in the cloud. 
+EC2 allows users to rent virtual computers on which to run their 
+own computer applications. 
+</para>
+
+<para>
+To allow usage of the CADD pipeline with minimal effort we developed a virtual machine 
+inside Amazon EC2 (commonly called AMI), that can be used to perform virtual screening using EC2
+infrastructure (no need to use local hardware or to perform any complex installation).
+</para>
+
+<section id="ec1-ami" xreflabel="Using CADD AMI">
+<title>Using Amazon AMI</title>
+
+<para>
+To use the CADD Amazon AMI a user must create an account with 
+<ulink url="http://aws.amazon.com">Amazon AWS</ulink> providing its credit 
+card number. Then he/she should login with the 
+<ulink url="https://console.aws.amazon.com/console/home">Amazon Console</ulink>
+and go to the EC2 section. Click on Images -> AMIs, select "All Images" from 
+the Viewing drop down box, and in the search box type "si2012". You should see 
+only one item left in the list called "si2012-opal/image.manifest.xml", 
+right click on it and select "Launch Instance". See image below.</para> 	
+
+<mediaobject>
+    <imageobject>
+        <imagedata fileref="images/image1.png">
+    </imageobject>
+</mediaobject>
+
+
+<para>In the first dialog you should choose the machine size you like to use for 
+your docking (see the table in the next section for pricing and execution duration). 
+</para>
+
+<para>Just make sure that your default security group allow http traffic from your IP 
+address to you Amazon Virtual Machine.
+Wait 10 minute for the machine to properly boot and then connect your 
+CADD client replacying the host name with the host name assigned to the machine 
+you just booted (you can see that in the "Instances" section).
+</para>
+</section>
+
+
+<section id="user-libraries" xreflabel="User Defined Libraries">
+<title>User Defined Libraries</title>
+<para>If you want to run the CADD pipeline against your defined libraries of 
+ligands, you can place them inside an <ulink url="http://aws.amazon.com/ebs/">
+Amazon Elastic Block Store (EBS)</ulink> volume.</para>
+
+<para>After that when you launch your machine at the Advanced Instance Options diaglog 
+you should type in the "library &lt;devicename&gt; &lt;path/to/libraries&gt;" in the User Data
+field as show in the picture.
+</para>
+
+
+<mediaobject>
+    <imageobject>
+        <imagedata fileref="images/image2.png">
+    </imageobject>
+</mediaobject>
+
+
+<para>
+The &lt;devicename&gt; should be the device specified when the volume will be attached 
+to the instance (we recomend using "sdp" and specifying /dev/sdp when attaching the volume).
+While &lt;path/to/libraries&gt; should be the asolute path name where the library are placed 
+in the EBS volume. If you have a EBS with two libraries in myLibraries/lib1 and myLibraries/lib2
+you should specify myLibraries.
+</para>
+<para>
+After the machine boot it will wait for the device &lt;devicename&gt; specified to appear and 
+then it will mount it and configure the pipeline to use libraries stored on that volume.
+</para>
+
+</section>
+
+
+<section id="run-time" xreflabel="Execution Time">
+<title>Execution Time</title>
+<para>Using the included NCI Diversity Set 3 library we run some screening using EC2 
+instances and we obtained the following execution time using the default Vina settings.
+It is clear that the most convenient Instance type to use for screening is the m1.xlarge
+considering that it has a short execution time and it is cheaper.
+</para>
+
+<table>
+        <title>Pricing and Execution Time</title>
+        <tgroup cols="2">
+                <tbody>
+                        <row>
+                                <entry>Instance Type</entry>
+                                <entry>Execution Time</entry>
+                                <entry>Cpus</entry>
+                                <entry>Price per hours</entry>
+                                <entry>Total Price</entry>
+                        </row>
+                        <row>
+                                <entry>m1.xlarge</entry>
+                                <entry>~14 hours</entry>
+                                <entry>4</entry>
+                                <entry>0.45$</entry>
+                                <entry>6.3$</entry>
+                        </row>
+                        <row>
+                                <entry>c1.xlarge</entry>
+                                <entry>~7 hours</entry>
+                                <entry>8</entry>
+                                <entry>0.66$</entry>
+                                <entry>4.62$</entry>
+                        </row>
+		</tbody>
+	</tgroup>
+</table>
+
+</section>
+
+
+
+</chapter>
+
