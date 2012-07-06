@@ -78,6 +78,13 @@ After the machine boot it will wait for the device &lt;devicename&gt; specified 
 then it will mount it and configure the pipeline to use libraries stored on that volume.
 </para>
 
+<para>To attach the volume to your running instance you should go to the EC2, Elastic Block
+Store, Volumes select the volumes you would like to attach, right click on it and select 
+"Attach Volume". In the dialog you should select the instance you just booted and in the device 
+field type "/deb/sdp". Wait 5 minute and then your instance is ready to dock against your customized
+library.
+</para>
+
 </section>
 
 
@@ -85,8 +92,8 @@ then it will mount it and configure the pipeline to use libraries stored on that
 <title>Execution Time</title>
 <para>Using the included NCI Diversity Set 3 library we run some screening using EC2 
 instances and we obtained the following execution time using the default Vina settings.
-It is clear that the most convenient Instance type to use for screening is the m1.xlarge
-considering that it has a short execution time and it is cheaper.
+It is clear that the most convenient EC2 instance type to use for screening is the m1.xlarge
+considering that it has a shorter execution time and it ends up being cheaper.
 </para>
 
 <table>
