@@ -33,7 +33,7 @@ function usage
   echo "                          the end of the simulation"
   echo "      --flex file         flexible part of the receptor"
   echo "      --receptor file     receptor pdbqt file"
-  echo "      --ligand_db name    used to select the ligand library, can be either NCIDS_SC, or sample"
+  echo "      --ligand_db name    used to select the ligand library, can be either NCI_DS3 NCIDS_SC and sample"
 }
 
 KILLPID=""

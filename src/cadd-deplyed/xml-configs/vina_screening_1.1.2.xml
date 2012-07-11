@@ -10,7 +10,17 @@ http://www.nbcr.net/ws_help/Vina_Parallel
 ]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
-TBD
+Inputs arguments:
+  ./vina_screening.sh [options] 
+
+      --config file       Used to specify the file with the config option used by vina
+      --user email        Use to specify the email address to use for sending notificaiton at 
+                          the end of the simulation
+      --flex file         flexible part of the receptor
+      --receptor file     receptor pdbqt file
+      --ligand_db name    used to select the ligand library, values can be NCI_DS3  NCIDS_SC or sample
+
+
 ]]>
     </info>
     <types>
