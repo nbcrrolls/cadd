@@ -14,6 +14,9 @@
         <changelog>
         </changelog>
 
+    <package>xterm</package>
+    <package>xsetroot</package>
+    <package>twm</package>
 
 <post os="linux" arch="x86_64">
 
@@ -21,7 +24,7 @@
 
 <file name="/etc/init.d/ec2-mount-cadd-library" perms="0755">
 <![CDATA[#!/bin/bash
-# $Id: cadd-ec2.xml,v 1.4 2012/07/03 19:44:21 clem Exp $
+# $Id: cadd-ec2.xml,v 1.5 2012/07/27 02:43:58 clem Exp $
 #
 # chkconfig: 2345 30 40
 # description: ec2-cadd mount EBS volume based on user data
