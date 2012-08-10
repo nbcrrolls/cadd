@@ -12,6 +12,8 @@
 	<changelog>
 	</changelog>
 
+	<package>roll-cadd-usersguide</package>
+
 <post>
 
 #Make log file directory 
