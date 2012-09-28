@@ -4,6 +4,10 @@
 #
 # script to perform virtual screening suing vina and SGE
 
+#SCHEDULER used for the submission
+SGE=true
+#CONDOR=true
+#NO_SHARED_FS=true
 #config parameters
 #max number of ligand that can be screened per submission 
 JOB_LIMIT=4000
@@ -40,13 +44,17 @@ KILLPID=""
 
 
 function clean_up {
-	# Perform program exit housekeeping
-	echo Aborting virtual screening...
-	if [ "$KILLPID" ] ; then 
-		echo Deleting running qsub process $KILLPID
-		kill $KILLPID
-	fi
-	exit 1
+  # Perform program exit housekeeping
+  echo Aborting virtual screening...
+  if [ "$KILLPID" ] ; then 
+    if [ "$SGE" ]; then
+      echo Deleting running qsub process $KILLPID
+      kill $KILLPID
+    elif [ "$CONDOR" ]; then 
+      condor_rm $KILLPID
+    fi
+  fi
+  exit 1
 }
 
 #set up the trap for the kill
@@ -88,13 +96,13 @@ if [ ! "$ligand_db" ]; then
 	echo
     echo "ERROR: You must choose a library to screen against"
 	echo ""
-	exit -1;
+	exit 1;
 fi
 
 if [ "$flex" ]; then
     if [ ! -f "$flex" ];then
 		echo "error flexible chain is not a valid file"
-		exit -1
+		exit 1
 	fi
 fi
 
@@ -114,7 +122,7 @@ if [ -f "$ACL" ] ; then
    	    echo "Please contact your server admin to get your username enabled."
    	    echo
    	    echo 
-   	    exit -1
+   	    exit 1
 	fi
 fi
 
@@ -131,19 +139,26 @@ if [ "$filter" ]; then
     echo $LIBRARYBASEDIR/$ligand_db/$i >> ligands.list
   done
 else
-  #getting list of ligands
-  s=find_ligands.sh
-
-  echo "#!/bin/bash" >> $s
-  echo "#$ -cwd" >> $s
-  echo "#$ -S /bin/bash" >> $s
-  echo "#$ -o find_ligands.out" >> $s
-  echo "#$ -e find_ligands.err" >> $s
-  echo "find $LIBRARYBASEDIR/$ligand_db -name \*.pdbqt > ligands.list" >> $s
-  chmod +x $s
-  qsub -sync y $s &
-  KILLPID=$!
-  wait
+  if [ "$SGE" ]; then
+    #sge dependent part
+    #getting list of ligands
+    s=find_ligands.sh
+  
+    echo "#!/bin/bash" >> $s
+    echo "#$ -cwd" >> $s
+    echo "#$ -S /bin/bash" >> $s
+    echo "#$ -o find_ligands.out" >> $s
+    echo "#$ -e find_ligands.err" >> $s
+    echo "find $LIBRARYBASEDIR/$ligand_db -name \*.pdbqt > ligands.list" >> $s
+    chmod +x $s
+    qsub -sync y $s &
+    KILLPID=$!
+    wait
+  elif [ "$CONDOR" ]; then
+    #condor dependent part
+    #we can't move the library to the remote node to much networking
+    find $LIBRARYBASEDIR/$ligand_db -name \*.pdbqt > ligands.list
+  fi
 fi
 
 
@@ -178,55 +193,108 @@ fi
 
 #  -----   Job Submission   -----
 #TODO this should be re-written
-NUMMACROJOB=`expr $NUMLIGANDS \/ $SGE_JOB_LIMIT`
-NUMMACROJOB=`expr $NUMMACROJOB + 1`
-
-for ((i=0; i<$NUMMACROJOB; i++))
-do
-  begin=`expr $i \* $SGE_JOB_LIMIT`
-  begin=`expr $begin + 1`
-  end=`expr $begin + $SGE_JOB_LIMIT`
-  end=`expr $end - 1`
-  awk 'NR>=b && NR<=e' b=$begin e=$end ligands.list > ligands.list.$begin.$end.seeds
-
-  s=vina_array_submit_$begin_$end.sh
-  NUMLIGANDS=`wc -l ligands.list.$begin.$end.seeds | awk '{print $1}'`
-
-  echo "#!/bin/bash" > $s
-  echo "#$ -clear" >> $s
-  echo "#$ -cwd" >> $s
-  echo "#$ -S /bin/bash" >> $s
-  echo "#$ -t 1-$NUMLIGANDS" >> $s
-  echo "#$ -o vina_array_submit.$begin.$end.out" >> $s
-  echo "#$ -e vina_array_submit.$begin.$end.err" >> $s
-  echo "" >> $s
-  echo "SEEDFILE=ligands.list.$begin.$end.seeds" >> $s
-  echo "ls \$SEEDFILE > /dev/null" >> $s
-  echo "SPDBQT=\$(cat \$SEEDFILE | head -n \$SGE_TASK_ID | tail -n 1)" >> $s
-  echo "SEED=\$(basename \$SPDBQT .pdbqt)" >> $s
-  echo "mkdir \$SEED" >> $s
-  echo "cp \$SPDBQT \$SEED" >> $s
-  echo "cp $receptor \$SEED" >> $s
-  echo "cp $config \$SEED" >> $s
-  echo "if test ! -z \"$flex\"; then" >> $s
-  echo "  cp $flex \$SEED" >> $s
-  echo "  FLAGS=\"--flex $flex\"" >> $s
-  echo "fi" >> $s
-  echo "cd \$SEED" >> $s
-#  echo "cp ../*.pdbqt ." >> $s
-  echo "touch $CURRENTWD" >> $s
-  echo "$VINA --config $config --receptor $receptor --ligand \$SEED.pdbqt --cpu 1 $FLAGS >& sge_array_\$SEED.log" >> $s
+if [ "$SGE" ]; then
+  NUMMACROJOB=`expr $NUMLIGANDS \/ $SGE_JOB_LIMIT`
+  NUMMACROJOB=`expr $NUMMACROJOB + 1`
   
-  chmod +x $s
+  for ((i=0; i<$NUMMACROJOB; i++))
+  do
+    begin=`expr $i \* $SGE_JOB_LIMIT`
+    begin=`expr $begin + 1`
+    end=`expr $begin + $SGE_JOB_LIMIT`
+    end=`expr $end - 1`
+    awk 'NR>=b && NR<=e' b=$begin e=$end ligands.list > ligands.list.$begin.$end.seeds
   
-  echo "Submitting Vina array job ($begin-$end) to the SGE scheduler"
+    s=vina_array_submit_$begin_$end.sh
+    NUMLIGANDS=`wc -l ligands.list.$begin.$end.seeds | awk '{print $1}'`
   
-  qsub -sync y $s &
-  KILLPID=$!
-  wait
+    echo "#!/bin/bash" > $s
+    echo "#$ -clear" >> $s
+    echo "#$ -cwd" >> $s
+    echo "#$ -S /bin/bash" >> $s
+    echo "#$ -t 1-$NUMLIGANDS" >> $s
+    echo "#$ -o vina_array_submit.$begin.$end.out" >> $s
+    echo "#$ -e vina_array_submit.$begin.$end.err" >> $s
+    echo "" >> $s
+    echo "SEEDFILE=ligands.list.$begin.$end.seeds" >> $s
+    echo "ls \$SEEDFILE > /dev/null" >> $s
+    echo "SPDBQT=\$(cat \$SEEDFILE | head -n \$SGE_TASK_ID | tail -n 1)" >> $s
+    echo "SEED=\$(basename \$SPDBQT .pdbqt)" >> $s
+    echo "mkdir \$SEED" >> $s
+    echo "cp \$SPDBQT \$SEED" >> $s
+    echo "cp $receptor \$SEED" >> $s
+    echo "cp $config \$SEED" >> $s
+    echo "if test ! -z \"$flex\"; then" >> $s
+    echo "  cp $flex \$SEED" >> $s
+    echo "  FLAGS=\"--flex $flex\"" >> $s
+    echo "fi" >> $s
+    echo "cd \$SEED" >> $s
+  #  echo "cp ../*.pdbqt ." >> $s
+    echo "touch $CURRENTWD" >> $s
+    echo "$VINA --config $config --receptor $receptor --ligand \$SEED.pdbqt --cpu 1 $FLAGS >& sge_array_\$SEED.log" >> $s
+    
+    chmod +x $s
+    
+    echo "Submitting Vina array job ($begin-$end) to the SGE scheduler"
+    
+    qsub -sync y $s &
+    KILLPID=$!
+    wait
+  
+    echo "Vina array job ($begin-$end) finished."
+  done
+elif [ "$CONDOR" ]; then
+  #condor submission section  
+  cat > condor_script << EOF
+# condor_qsub call: vina_array
+universe = vanilla
+log = $CURRENTWD/vina_array_condor_log
+executable = /opt/mgltools/bin/vina 
+notification = Never
+priority = 0
+EOF
 
+  if [ "$NO_SHARED_FS"  ]; then  
+    #tell condor to transfer files
+    echo "should_transfer_files = YES" >> condor_script
+    echo "when_to_transfer_output = ON_EXIT" >> condor_script
+  else
+    echo "should_transfer_files = NO" >> condor_script
+  fi
+  #for on all the ligands
+  for ligandpath in `cat ligands.list`; do
+    ligand_name=$(basename $ligandpath .pdbqt)
+
+    mkdir $ligand_name
+    cp $ligandpath $ligand_name
+    cp $receptor $ligand_name
+    cp $config $ligand_name
+
+    if [ "$flex" ]; then
+      cp $flex $ligand_name
+      flags=" --flex $flex "
+    fi
+
+    #force one cpu
+    flags=" --cpu 1"
+
+    cat >> condor_script << EOF
+error = dock_$ligand_name.err
+output = dock_$ligand_name.out
+arguments = --config $config --receptor $receptor --ligand $ligand_name.pdbqt $flags
+initialdir = $ligand_name
+transfer_input_files =  $config, $receptor, $ligand_name.pdbqt
+Queue
+EOF
+  #for on all the ligands
+  done
+
+  #submission to condor
+  job_number=`condor_submit condor_script| tail -n 1 | awk '{print $NF}' `
+  KILLPID=${job_number%?} 
+  condor_wait vina_array_condor_log 
   echo "Vina array job ($begin-$end) finished."
-done
+fi
 
 $ANALIZE -d . -r $receptor -l screening_report.log -R -p "*_out.pdbqt"
 
