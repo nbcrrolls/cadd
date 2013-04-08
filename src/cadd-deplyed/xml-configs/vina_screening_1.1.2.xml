@@ -2,17 +2,13 @@
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata appName="AutoDock Vina Screening">
     <usage><![CDATA[AutoDock Vina SGE array parallel virtual screening.
-<BR>
-  Tutorial: 
-<A HREF=http://www.nbcr.net/ws_help/Vina_Parallel>
-http://www.nbcr.net/ws_help/Vina_Parallel
-</A>
+  Tutorial: http://www.nbcr.net/data/docs/wshelp/Vina_Parallel/tutorial.txt
 ]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
-Inputs arguments:
-  ./vina_screening.sh [options] 
-
+Command line :
+./vina_screening.sh [arguments] 
+arguments:
       --config file       Used to specify the file with the config option used by vina
       --user email        Use to specify the email address to use for sending notificaiton at 
                           the end of the simulation
@@ -38,7 +34,7 @@ Inputs arguments:
             <required>true</required>
             <semanticType></semanticType>
             <textDesc>Rigid part of the receptor (PDBQT)
-            (&lt;A HREF=http://www.nbcr.net/ws_help/Vina_Parallel/sample_inputs/1jsn_mod.pdbqt&gt;sample receptor&lt;/A&gt;)
+            (&lt;A HREF=http://www.nbcr.net/data/docs/wshelp/Vina_Parallel/sample_inputs/1jsn_mod.pdbqt&gt;sample receptor&lt;/A&gt;)
             </textDesc>
         </param>
         <param>
@@ -71,7 +67,7 @@ Inputs arguments:
             <value>NCI_DS3</value>
             <textDesc>Use existing ligand library on the server
             &lt;BR&gt;
-            &lt;A HREF=https://www.nbcr.net/pub/wiki/index.php?title=Virtual_Screening_Libraries&gt;
+            &lt;A HREF=https://www.nbcr.net/data/docs/wshelp/Vina_Parallel/Virtual_Screening_Libraries.html&gt;
             Click here for more information about each library
             &lt;/A&gt;
             </textDesc>
@@ -101,7 +97,7 @@ Inputs arguments:
             <paramType>FILE</paramType>
             <required>false</required>
             <semanticType></semanticType>
-            <textDesc>Configuration File (&lt;A HREF=http://www.nbcr.net/ws_help/Vina_Parallel/sample_outputs/test.config&gt;sample configuration file)&lt;A&gt;</textDesc>
+            <textDesc>Configuration File (&lt;A HREF=http://www.nbcr.net/data/docs/wshelp/Vina_Parallel/sample_inputs/test.config&gt;sample configuration file)&lt;A&gt;</textDesc>
 
         </param>
         <param>

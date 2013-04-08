@@ -2,17 +2,13 @@
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata appName="Prepare_receptor_1.5.4">
     <usage><![CDATA[Prepare receptor is used to transform a pdb file into a pdbqt file, which can be used for Autogrid. MGL Version 1.5.4.
-<BR><A HREF=http://www.nbcr.net/ws_help/Prepare_Receptor/>
-Tutorial: http://www.nbcr.net/ws_help/Prepare_Receptor/</A>
+Tutorial: http://www.nbcr.net/data/docs/wshelp/Prepare_Receptor/tutorial.txt</A>
 ]]></usage>
     <info>
     <![CDATA[
-prepare_receptor4: receptor filename must be specified.
 Usage: prepare_receptor4.py -r filename
-
-    Description of command...
-         -r   receptor_filename 
-        supported file types include pdb,mol2,pdbq,pdbqs,pdbqt, possibly pqr,cif
+    -r  receptor_filename 
+        supported file types : pdb, mol2, pdbq, pdbqs, pdbqt, possibly pqr,cif
     Optional parameters:
         [-v]  verbose output (default is minimal output)
         [-o pdbqt_filename]  (default is 'molecule_name.pdbqt')
