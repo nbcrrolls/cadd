@@ -1,2 +1,2 @@
 NAME		= autodock-libraries
-RELEASE		= 1
+RELEASE		= 2

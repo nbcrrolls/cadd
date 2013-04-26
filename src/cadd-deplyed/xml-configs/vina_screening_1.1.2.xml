@@ -65,6 +65,7 @@ arguments:
             <value>sample</value>
             <value>NCIDS_SC</value>
             <value>NCI_DS3</value>
+            <value>steroids</value>
             <textDesc>Use existing ligand library on the server
             &lt;BR&gt;
             &lt;A HREF=https://www.nbcr.net/data/docs/wshelp/Vina_Parallel/Virtual_Screening_Libraries.html&gt;

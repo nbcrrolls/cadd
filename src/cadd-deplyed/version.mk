@@ -1,4 +1,4 @@
 NAME = cadd-deployed
 PKGROOT		= /opt/cadd/bin
-RELEASE 	= 1
+RELEASE 	= 2
 
