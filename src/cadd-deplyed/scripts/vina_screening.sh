@@ -89,7 +89,19 @@ while [ "$1" != "" ]; do
     shift
 done
 
-#TODO add test for config file
+# test for config file
+if [ "$config"  == "" ] ; then
+    config="config"
+    touch $config
+fi
+
+cp $config $config.org
+
+if test -e tmp.config; then
+  cat $config >> tmp.config
+  cp tmp.config $config
+fi
+
 
 if [ ! "$ligand_db" ]; then
 	usage
@@ -177,12 +189,6 @@ fi
 
 echo "There are $NUMLIGANDS ligands."
 
-cp $config $config.org
-
-if test -e tmp.config; then
-  cat $config >> tmp.config
-  cp tmp.config $config
-fi
 
 if [ "$NUMLIGANDS" -gt "$JOB_LIMIT" ]; then
   echo "ERROR: the number of ligands exceeded $JOB_LIMIT, the server cannot support this"
@@ -194,25 +200,25 @@ fi
 #  -----   Job Submission   -----
 #TODO this should be re-written
 if [ "$SGE" ]; then
-  NUMMACROJOB=`expr $NUMLIGANDS \/ $SGE_JOB_LIMIT`
-  NUMMACROJOB=`expr $NUMMACROJOB + 1`
+  a=$NUMLIGANDS
+  b=$SGE_JOB_LIMIT
+  numjobs=`echo "$a / $b + ($a - $a/$b*$b > 0)" | bc`
   
-  for ((i=0; i<$NUMMACROJOB; i++))
+  for ((i=0; i<$numjobs; i++))
   do
-    begin=`expr $i \* $SGE_JOB_LIMIT`
-    begin=`expr $begin + 1`
-    end=`expr $begin + $SGE_JOB_LIMIT`
-    end=`expr $end - 1`
+    begin=`echo "$i * $b + 1" | bc`
+    end=`echo "$begin + $b - 1" | bc`
+    let "end = ($end < $a) ? $end : $a"
     awk 'NR>=b && NR<=e' b=$begin e=$end ligands.list > ligands.list.$begin.$end.seeds
   
     s=vina_array_submit_$begin_$end.sh
-    NUMLIGANDS=`wc -l ligands.list.$begin.$end.seeds | awk '{print $1}'`
+    numtasks=`wc -l ligands.list.$begin.$end.seeds | awk '{print $1}'`
   
     echo "#!/bin/bash" > $s
     echo "#$ -clear" >> $s
     echo "#$ -cwd" >> $s
     echo "#$ -S /bin/bash" >> $s
-    echo "#$ -t 1-$NUMLIGANDS" >> $s
+    echo "#$ -t 1-$numtasks" >> $s
     echo "#$ -o vina_array_submit.$begin.$end.out" >> $s
     echo "#$ -e vina_array_submit.$begin.$end.err" >> $s
     echo "" >> $s
@@ -229,12 +235,10 @@ if [ "$SGE" ]; then
     echo "  FLAGS=\"--flex $flex\"" >> $s
     echo "fi" >> $s
     echo "cd \$SEED" >> $s
-  #  echo "cp ../*.pdbqt ." >> $s
     echo "touch $CURRENTWD" >> $s
     echo "$VINA --config $config --receptor $receptor --ligand \$SEED.pdbqt --cpu 1 $FLAGS >& sge_array_\$SEED.log" >> $s
     
     chmod +x $s
-    
     echo "Submitting Vina array job ($begin-$end) to the SGE scheduler"
     
     qsub -sync y $s &
@@ -296,7 +300,9 @@ EOF
   echo "Vina array job ($begin-$end) finished."
 fi
 
-$ANALIZE -d . -r $receptor -l screening_report.log -R -p "*_out.pdbqt"
+if [ -f "$ANALIZE" ]; then
+    $ANALIZE -d . -r $receptor -l screening_report.log -R -p "*_out.pdbqt"
+fi
 
 tar -cz --exclude=results.tar.gz -f results.tar.gz .
 
