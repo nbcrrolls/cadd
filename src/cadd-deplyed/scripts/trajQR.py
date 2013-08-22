@@ -150,12 +150,13 @@ class TrajQR:
 	f = os.popen('file -bi %s' % self.input, 'r')
 	info = f.read()
 	f.close()
+        print "DEBUG: ", info
 
         # check archive format
-	if  string.find (info, 'x-zip') > -1:
-		self.checkZipFile()
-	elif string.find (info, 'x-gzip') > -1:
+	if  string.find (info, 'gzip') > -1:
 		self.checkGzipFile()
+	elif string.find (info, 'zip') > -1:
+		self.checkZipFile()
 	elif string.find (info, 'ERROR') > -1:
             self.inputError = info
             self.inputErrExit()
