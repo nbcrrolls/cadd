@@ -57,6 +57,13 @@ if test -e $trajqr_script ; then
     $ANT -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
 fi
 
+# trajqr clustering. New: works on single pdb file, creates needed frames frorm it
+trajqr_script=/opt/cadd/bin/trajQR_2.py
+trajqrver=2.0
+if test -e $trajqr_script ; then
+    $ANT -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
+fi
+
 </file>
 
 fi

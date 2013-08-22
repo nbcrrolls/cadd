@@ -1,0 +1,122 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- metadata about the application being wrapped -->
+  <metadata appName="TrajQR 2.0">
+    <usage><![CDATA[TrajQR clustering on a simulation PDB file containing multiple frames]]></usage>
+    <info>
+    <![CDATA[
+NAME:
+        trajQR.py - run TrajQR clustering on a simulation PDB file with multiple frames
+SYNOPSIS:
+        trajQR.py -f FILE -r NUM1 [-l NUM2] [-s QRstruct] [-t QHtree]  [-h|help]
+
+DESCRIPTION:
+    -f|--file FILE       - compressed PDB file (file.zip or file.gz)       
+                           Example 1a.gz, uncompresses into a1.
+    -r|--rmsd NUM        - float RMSD cutoff. Examle: 0.5 
+    -l|--lframe NUM2     - number of frames (int) to extract form PDB file. Examle: 25
+                           If not given, the default is to process all frames. 
+                           Frames will be extracted into a directory frames/. 
+    -s|--struct QRstruct - filename for output QR structures list. Default: qr.struct
+    -t|--tree QHtree     - filename for output QH tree. Default: qh.tree
+    -h|--help            - prints usage
+
+    ]]>
+    </info>
+    
+    <!-- information about command-line arguments -->
+    <types> 
+        <!-- list of flags -->
+        <flags>
+            <flag>
+                <id>license</id>
+                <tag> </tag>
+                <textDesc>Accept</textDesc>
+            </flag>
+        </flags>
+    
+        <!-- list of untagged parameters -->
+        <untaggedParams>
+        </untaggedParams>
+    
+        <!-- list of tagged parameters, in order -->
+        <taggedParams>
+            <param>
+                <id>file</id>
+                <tag>-f</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Compressed PDB file (zip or gz format) that contains multiple PDB frames.  
+                          Example 1a.pdb.gz, uncompresses into 1a.pdb 
+		</textDesc>
+
+            </param>
+            <param>
+                <id>rmsd</id>
+                <tag>-r</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>RMSD cutoff (float value)</textDesc>
+            </param>
+            <param>
+                <id>lframe</id>
+                <tag>-l</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <default>0</default>
+                <textDesc>Number of frames (int) to extract from PDB file. For all frames use 0</textDesc>
+            </param>
+            <param>
+                <id>qrstruct</id>
+                <tag>-s</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <default>qr.struct</default>
+                <textDesc>Filename for output QR structures list. Default: qr.struct </textDesc>
+            </param>            
+            <param>
+                <id>qhtree</id>
+                <tag>-t</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <default>qh.tree</default>
+                <textDesc>Filename for output QH tree. Default: qh.tree</textDesc>
+            </param>            
+        </taggedParams>
+
+        <!-- grouping of parameters -->
+        <groups>
+          <group>
+            <name>input</name>
+            <elements>file rmsd lframe</elements>
+            <required>true</required>
+            <textDesc>Input</textDesc>
+          </group>
+          <group>
+            <name>output</name>
+            <elements>qrstruct qhtree</elements>
+            <required>true</required>
+            <textDesc>Output</textDesc>
+          </group>
+          <group>
+            <name>License</name>
+            <elements>license</elements>
+            <textDesc>Any published work which utilizes VMD/Multiseq shall include the following reference:&lt;br&gt; &lt;br&gt;
+                 Elijah Roberts, John Eargle, Dan Wright, and Zaida Luthey-Schulten. &lt;br&gt;
+                 MultiSeq: Unifying sequence and structure data for evolutionary analysis. BMC Bioinformatics. 2006,7:382. 
+            </textDesc>
+          </group>
+        </groups>
+    </types>
+
+  </metadata>
+
+  <binaryLocation>/opt/cadd/bin/trajQR_2.py</binaryLocation>
+ 
+  <!-- whether to validate command-line arguments using type information above -->
+  <validateArgs>false</validateArgs>
+
+  <!-- whether this application is serial or parallel -->
+  <parallel>false</parallel>
+
+</appConfig>
