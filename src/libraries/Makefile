@@ -28,7 +28,7 @@
 
 CADDROLL        = /state/partition1/opal
 PKGROOT		= $(CADDROLL)/libraries
-LIBRARIES	= NCI_DS3 NCIDS_SC sample steroids
+LIBRARIES	= NCI_DS3 NCIDS_SC sample steroids D3
 REDHAT.ROOT     = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
