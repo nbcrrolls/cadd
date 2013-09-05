@@ -1,0 +1,58 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+	   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="Smiley2png 1.0">
+    <usage><![CDATA[Read an input file and convert smiley strings into PNG images.]]></usage>
+    <info xsd:type="xsd:string">
+      <![CDATA[
+	       Usage: smiley2png -f FILE -s NUM [-h|help]
+	       OPTIONS:
+               -f|--file FILE       - input file with Fname (png format) and Smiley string per line
+                                      Example line: img1.png CCCCCC 
+                                      Valid file name can contains "-_." and alpha-numeric characters and ends with ".png" 
+               -s|--size NUM        - integer NUM for geoometry (NUM x NUM) of the output images. Examle: 200. 
+               -h|--help            - prints usage
+      ]]>
+    </info>
+
+    <types>
+      <!-- list of tagged parameters -->
+      <taggedParams>
+
+	<param>
+	  <id>ifile</id>
+	  <tag>-f</tag>
+	  <paramType>FILE</paramType>
+	  <ioType>INPUT</ioType>
+	  <required>true</required>
+	  <textDesc>Input file (see help for format description)</textDesc>
+	</param>
+
+        <param>
+          <id>isize</id>
+	  <tag>-s</tag>
+          <paramType>STRING</paramType>
+          <default>200</default>
+          <ioType>INPUT</ioType>
+          <textDesc>Output files geometry as an integer (for example: 100)</textDesc>
+        </param>
+
+      </taggedParams>
+
+      <groups>
+
+        <group>
+          <name>inputParam</name>
+          <elements>ifile isize </elements>
+          <textDesc>Input parameters </textDesc>
+        </group>
+
+      </groups>
+      
+    </types>
+
+  </metadata>
+
+  <binaryLocation>/opt/cadd/bin/smiley2png</binaryLocation>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
+
+</appConfig>

@@ -64,6 +64,13 @@ if test -e $trajqr_script ; then
     $ANT -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
 fi
 
+# smiley2png 
+smileyver=1.0
+smiley_bin=/opt/cadd/bin/smiley2png
+if test -e $smiley_bin; then
+    $ANT -f $OPALXML deploy -DserviceName=smiley2png_${smileyver} -DappConfig=$OPALCONFIG/smiley2png_${smileyver}.xml
+fi
+
 </file>
 
 fi

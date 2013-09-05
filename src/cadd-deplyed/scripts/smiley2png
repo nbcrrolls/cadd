@@ -1,0 +1,244 @@
+#! /usr/bin/env python
+
+import os
+import sys
+import string
+import getopt
+import types
+import UserDict
+import re
+from pprint import pprint
+import zipfile
+import gzip
+
+class Struct:
+    """ base structure """
+    pass
+
+class Smiles:
+    """ Base class """
+    def __init__(self, argv):
+        self.args = argv[1:]
+        self.usageName  = os.path.basename(argv[0])
+
+        self.setDefaults()
+        self.parseArgs()
+        self.checkArgs()
+
+    def setDefaults(self):
+        """ set default class attributes """
+        self.setDefaultOpts()
+
+        self.input      = None       # input file name
+        self.size       = None       # input geometry for output png files
+
+        self.limit      = 200        # number of smiles in the file to process
+        self.file       = "vinput"   # file with corrected info from input file, passed to SGE
+        self.sgesub     = "sge.sub"  # SGE submit script 
+
+    def setDefaultOpts(self):
+        """ set default command line options """
+        self.getopt = Struct()
+        self.getopt.s = ['h']
+        self.getopt.l = ['help']
+
+        self.getopt.s.extend([('f:', 'file'),
+                              ('s:', 'size')
+                              ])
+        self.getopt.l.extend([('file=', 'file'),
+                              ('size=', 'size')
+                              ])
+
+    def parseArg(self, c):
+        """ parse single command line argument """
+        if c[0] in ('-h', '--help'):
+            self.help()
+        elif c[0] in ('-f', '--file'):
+            self.input = c[1]
+        elif c[0] in ('-s', '--size'):
+            self.size = c[1]
+        else:
+            return 0
+
+        return 1
+
+    def parseArgs(self):
+        """ parse command line arguments """
+        short = ''
+        for e in self.getopt.s:
+            if type(e) == types.TupleType:
+                short = short + e[0]
+            else:
+                short = short + e
+
+        long = []
+        for e in self.getopt.l:
+            if type(e) == types.TupleType:
+                long.append(e[0])
+            else:
+                long.append(e)
+        try:
+            opts, args = getopt.getopt(self.args, short, long)
+        except getopt.error:
+            self.help()
+
+        for c in opts:
+            self.parseArg(c)
+        self.args = args
+
+    def checkArgs(self):
+        """ check correctness of command line arguments """
+        missing = 0;
+        self.msg = "ERROR in input:\n"
+        if self.input == None: 
+            self.msg += ('\tmissing input file \n')
+            missing += 1
+        if self.size == None:  
+            self.msg += ('\tmissing geometry (int) \n')
+            missing += 1
+        if missing:
+            self.inputErrExit()
+
+        self.msg = ""
+
+
+    def checkInputFile(self):
+        """ validate output files names """
+        # read inpuit file
+        f = open(self.input, 'r')
+        lines = f.readlines()
+        f.close()
+        numlines = len(lines)
+        if numlines >= self.limit:
+            self.msg += "WARNING: number of allowed conversions is %s. Extra conversions will be ignored.\n" % self.limit
+
+        # verify input lines
+        vlines = ""
+        count = 0
+        for line in lines:
+            if count >= self.limit:
+                break
+
+            try:
+                fname, smiley = line.split() 
+                count += 1
+                fname = self.checkValidFileName(fname, count)
+                vlines += "%s %s\n" % (fname, smiley) 
+            except ValueError:
+                numlines -= 1
+                if len(line) > 1:
+                    self.msg += "WARNING: ignoring incorrect input line : %s" % line
+
+        # write corrected input file to pass to SGE
+        self.writeFile(self.file, vlines)
+        self.tasks = count
+
+
+    def writeFile(self, fname, lines):
+        """ writes verified input lines in a new file that will be passed to SGE """
+        f = open(fname, 'w')
+        f.write(lines)
+        f.close()
+
+    def inputErrExit(self):
+        """ prints input related error and exits """
+        print (self.msg)
+        self.help()
+        sys.exit(0)
+
+    def help(self):
+        """ print usage """
+        print '\nNAME: \n' , \
+              '\t%s - convert smiley strings into PNG images.\n' % self.usageName, \
+              '\nSYNOPSIS:\n' , \
+              '\t%s -f FILE -s NUM [-h|help]\n' % self.usageName, \
+              '\nDESCRIPTION:\n' , \
+              '    -f|--file FILE       - input file with Fname (png format) and Smiley string per line\n', \
+              '                           Example line: img1.png CCCCCC \n', \
+              '                           Valid file name can contains "-_." and alpha-numeric characters and ends with ".png" \n', \
+              '    -s|--size NUM        - integer NUM for geoometry of the output images. Examle: 200 \n', \
+              '    -h|--help            - prints usage\n', \
+        sys.exit(0)
+
+    def checkGeom(self):
+        """ check if size is integer """
+        try:
+            self.size = int(self.size)
+        except:
+            self.msg += "ERROR: input value for Geometry is not an integer: %s " % self.size
+            self.inputErrExit()
+
+    def checkValidFileName(self, name, num):
+        """ check output file name validity """
+        NAME_MAX=50                          # allowed filename length
+        defname = "img%d.png" % num          # default name made from line number
+
+        strip_name = os.path.basename(name)  # strip / and . from the front
+        length = len(strip_name)
+
+        if length < 5 :
+            print "WARNING:\t '%s' is too short, using '%s' " % (name, defname)
+            return defname
+        if length >=NAME_MAX :
+            print "WARNING:\t '%s' is too long, using '%s' " % (name, defname)
+            return defname
+
+        valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
+        valid_name = ''.join(c for c in strip_name if c in valid_chars)
+
+        if strip_name != valid_name:
+            print "WARNING:\t '%s' filename contains invalid characters, using '%s' " % (name, defname)
+            return defname
+
+        if valid_name[-4:] != ".png":
+            valid_name += ".png"
+            print "WARNING:\t '%s' filename missing extension, using '%s' " % (name, valid_name)
+
+        return valid_name
+
+    def writeSubmitScript(self):
+        """ create SGE submit script """
+        subtxt  = "#!/bin/bash\n"
+        subtxt += "#$ -cwd\n"
+        subtxt += "#$ -S /bin/bash\n"
+        subtxt += "#$ -N smiley2png\n"
+        subtxt += "#$ -o smi.$TASK_ID.out\n"
+        subtxt += "#$ -e smi.$TASK_ID.err\n"
+        subtxt += "#$ -t 1-%d\n\n" % self.tasks
+        subtxt += "SMILES=%s\n" % self.file
+        subtxt += 'LINE=$(awk "NR==$SGE_TASK_ID" $SMILES)\n'
+        subtxt += "set $LINE\n" 
+        subtxt += "FILE=$1\n" 
+        subtxt += "SMILE=$2\n\n" 
+        subtxt += "/opt/openbabel/bin/obabel -:\"$SMILE\" -O $FILE -xp %d\n\n" % self.size
+
+        self.writeFile(self.sgesub, subtxt)
+
+    def runSGEjob(self):
+        self.writeSubmitScript()
+        command = "qsub -sync y %s" % self.sgesub
+        os.system(command)
+
+    def postSGEjob(self):
+        os.system("tail -n +1 *.err > smi2png-err; rm -rf *.err")
+        os.system("tail -n +1 *.out > smi2png-out; rm -rf *.out")
+        os.system("tar czf output-images.tar.gz *.png; rm -rf *.png")
+
+    def run(self):
+        """ main function """
+        self.checkGeom()
+        self.checkInputFile()
+        self.runSGEjob()
+        self.postSGEjob()
+
+        print self.msg
+        sys.exit(0);
+
+    def test(self):
+        """ test """
+        pprint (self.__dict__)
+
+if __name__ == "__main__":
+        app=Smiles(sys.argv)
+        app.run()
+
