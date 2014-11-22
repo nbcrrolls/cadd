@@ -20,62 +20,6 @@
 mkdir -p /opt/cadd/logs
 chown tomcat /opt/cadd/logs
 
-
-# Opal deployment stuff
-if [ -d /opt/opal ]; then
-    #ok we have opal installed
-    #let's deploy the 
-
-
-#TODO serivce name on the workflow is /GROMOS_ClusterFiles no gromos_cluster_4.5.5
-<file name="/opt/opal/deployed/deploy.sh" mode="append">
-# gromos clustering
-gromosVER=4.5.5
-gromos_script=/opt/cadd/bin/gromos_cluster_files.sh
-if test -e $gromos_script; then
-    $ANT -f $OPALXML deploy -DserviceName=gromos_cluster_$gromosVER -DappConfig=$OPALCONFIG/gromos_cluster_$gromosVER.xml
-fi
-
-# autodock vina screening
-vinaVER=1.1.2
-vina_screening_script=/opt/cadd/bin/vina_screening.sh
-if test -e $vina_screening_script; then
-    $ANT -f $OPALXML deploy -DserviceName=autodockvina_screening_$vinaVER -DappConfig=$OPALCONFIG/vina_screening_$vinaVER.xml
-fi
-
-# prepare receptor
-prepare_receptorVER=1.5.6
-prepare_receptor_script=/opt/cadd/bin/prepare_receptor.sh
-if test -e $prepare_receptor_script; then
-    $ANT -f $OPALXML deploy -DserviceName=prepare_receptor_$prepare_receptorVER -DappConfig=$OPALCONFIG/prepare_receptor_$prepare_receptorVER.xml
-fi
-
-# trajqr clustering
-trajqr_script=/opt/cadd/bin/trajQR.py
-trajqrver=1.0
-if test -e $trajqr_script ; then
-    $ANT -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
-fi
-
-# trajqr clustering. New: works on single pdb file, creates needed frames frorm it
-trajqr_script=/opt/cadd/bin/trajQR_2.py
-trajqrver=2.0
-if test -e $trajqr_script ; then
-    $ANT -f $OPALXML deploy -DserviceName=trajqr_$trajqrver -DappConfig=$OPALCONFIG/trajqr_$trajqrver.xml
-fi
-
-# smiley2png 
-smileyver=1.0
-smiley_bin=/opt/cadd/bin/smiley2png
-if test -e $smiley_bin; then
-    $ANT -f $OPALXML deploy -DserviceName=smiley2png_${smileyver} -DappConfig=$OPALCONFIG/smiley2png_${smileyver}.xml
-fi
-
-</file>
-
-fi
-
-
 </post>
 
 </kickstart>
