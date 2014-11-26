@@ -54,7 +54,7 @@
 
 
 REDHAT.ROOT = $(PWD)/../../
-DEPLOY_ROOT = /opt/tomcat/deployed
+DEPLOY_ROOT = /opt/opal/deployed
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
