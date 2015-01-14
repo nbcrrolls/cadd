@@ -20,6 +20,12 @@
 mkdir -p /opt/cadd/logs
 chown tomcat /opt/cadd/logs
 
+if [ -d /share/opal ]; then
+    if [ -d /state/partition1/opal/libraries ]; then
+        (cd /share/opal; rm -rf libraries; ln -s /state/partition1/opal/libraries .)
+    fi
+fi
+
 </post>
 
 </kickstart>
