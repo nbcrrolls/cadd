@@ -2,7 +2,7 @@
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata appName="Prepare_receptor_1.5.4">
     <usage><![CDATA[Prepare receptor is used to transform a pdb file into a pdbqt file, which can be used for Autogrid. MGL Version 1.5.4.
-Tutorial: http://www.nbcr.net/data/docs/wshelp/Prepare_Receptor/tutorial.txt</A>
+Tutorial: http://nbcr.ucsd.edu/data/docs/wshelp/Prepare_Receptor/tutorial.txt</A>
 ]]></usage>
     <info>
     <![CDATA[
