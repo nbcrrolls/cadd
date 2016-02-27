@@ -2,7 +2,7 @@
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata appName="AutoDock Vina Screening">
     <usage><![CDATA[AutoDock Vina SGE array parallel virtual screening.
-  Tutorial: http://www.nbcr.net/data/docs/wshelp/Vina_Parallel/tutorial.txt
+  Tutorial: http://nbcr.ucsd.edu/data/docs/wshelp/Vina_Parallel/tutorial.txt
 ]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
@@ -34,7 +34,7 @@ arguments:
             <required>true</required>
             <semanticType></semanticType>
             <textDesc>Rigid part of the receptor (PDBQT)
-            (&lt;A HREF=http://www.nbcr.net/data/docs/wshelp/Vina_Parallel/sample_inputs/1jsn_mod.pdbqt&gt;sample receptor&lt;/A&gt;)
+            (&lt;A HREF=http://nbcr.ucsd.edu/data/docs/wshelp/Vina_Parallel/sample_inputs/1jsn_mod.pdbqt&gt;sample receptor&lt;/A&gt;)
             </textDesc>
         </param>
         <param>
@@ -68,7 +68,7 @@ arguments:
             <value>steroids</value>
             <textDesc>Use existing ligand library on the server
             &lt;BR&gt;
-            &lt;A HREF=https://www.nbcr.net/data/docs/wshelp/Vina_Parallel/Virtual_Screening_Libraries.html&gt;
+            &lt;A HREF=https://nbcr.ucsd.edu/data/docs/wshelp/Vina_Parallel/Virtual_Screening_Libraries.html&gt;
             Click here for more information about each library
             &lt;/A&gt;
             </textDesc>
@@ -98,7 +98,7 @@ arguments:
             <paramType>FILE</paramType>
             <required>false</required>
             <semanticType></semanticType>
-            <textDesc>Configuration File (&lt;A HREF=http://www.nbcr.net/data/docs/wshelp/Vina_Parallel/sample_inputs/test.config&gt;sample configuration file)&lt;A&gt;</textDesc>
+            <textDesc>Configuration File (&lt;A HREF=http://nbcr.ucsd.edu/data/docs/wshelp/Vina_Parallel/sample_inputs/test.config&gt;sample configuration file)&lt;A&gt;</textDesc>
 
         </param>
         <param>
