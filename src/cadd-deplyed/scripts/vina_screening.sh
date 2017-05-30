@@ -159,6 +159,7 @@ else
     echo "#!/bin/bash" >> $s
     echo "#$ -cwd" >> $s
     echo "#$ -S /bin/bash" >> $s
+    echo "#$ -q vina" >> $s
     echo "#$ -o find_ligands.out" >> $s
     echo "#$ -e find_ligands.err" >> $s
     echo "find $LIBRARYBASEDIR/$ligand_db -name \*.pdbqt > ligands.list" >> $s
@@ -211,7 +212,7 @@ if [ "$SGE" ]; then
     let "end = ($end < $a) ? $end : $a"
     awk 'NR>=b && NR<=e' b=$begin e=$end ligands.list > ligands.list.$begin.$end.seeds
   
-    s=vina_array_submit_$begin_$end.sh
+    s=vina_array_submit_$begin.$end.sh
     numtasks=`wc -l ligands.list.$begin.$end.seeds | awk '{print $1}'`
   
     echo "#!/bin/bash" > $s
@@ -219,6 +220,7 @@ if [ "$SGE" ]; then
     echo "#$ -cwd" >> $s
     echo "#$ -S /bin/bash" >> $s
     echo "#$ -t 1-$numtasks" >> $s
+    echo "#$ -q vina" >> $s
     echo "#$ -o vina_array_submit.$begin.$end.out" >> $s
     echo "#$ -e vina_array_submit.$begin.$end.err" >> $s
     echo "" >> $s
