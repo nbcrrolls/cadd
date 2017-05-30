@@ -26,6 +26,10 @@ if [ -d /share/opal ]; then
     fi
 fi
 
+echo "Create a queue vina, and hostgroup @vina based on all.q and"
+echo "allocate part of the resources to vina queue". 
+echo "Service AutoDock Vina Screening  jobs are submitted to vina queue."
+
 </post>
 
 </kickstart>
